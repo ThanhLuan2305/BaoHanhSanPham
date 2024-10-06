@@ -87,6 +87,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtTK">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtTKActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="txtPassword">
     </Component>

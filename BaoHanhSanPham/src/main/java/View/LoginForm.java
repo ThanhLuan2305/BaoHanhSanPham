@@ -46,6 +46,12 @@ public class LoginForm extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("ĐĂNG NHẬP");
 
+        txtTK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTKActionPerformed(evt);
+            }
+        });
+
         btnDN.setBackground(new java.awt.Color(255, 153, 0));
         btnDN.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnDN.setForeground(new java.awt.Color(0, 0, 255));
@@ -100,6 +106,10 @@ public class LoginForm extends javax.swing.JFrame {
     private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jCheckBox1ActionPerformed
+
+    private void txtTKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTKActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTKActionPerformed
 
     
 
