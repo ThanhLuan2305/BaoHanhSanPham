@@ -6,6 +6,9 @@ package Main;
 
 import View.LoginForm;
 import View.MainForm;
+import View.pnlCustomer;
+import View.pnlCustomer_Product;
+import View.pnlProduct;
 import View.pnlWarrantyClaim;
 import View.pnlWarrantyPolicy;
 
@@ -17,7 +20,8 @@ public class BHSP {
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new pnlWarrantyPolicy().setVisible(true);
+//                new pnlWarrantyPolicy().setVisible(true);
+                new pnlCustomer().setVisible(true);
             }
         });
     }
