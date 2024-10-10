@@ -21,7 +21,7 @@ public class BHSP {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
 //                new pnlWarrantyPolicy().setVisible(true);
-                new pnlCustomer().setVisible(true);
+                new MainForm().setVisible(true);
             }
         });
     }
