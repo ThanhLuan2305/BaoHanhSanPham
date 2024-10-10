@@ -1,6 +1,6 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package View;
 
@@ -22,10 +22,10 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author nganh
  */
-public class pnlWarrantyClaim extends javax.swing.JFrame {
+public class pnlWarrantyClaim extends javax.swing.JPanel {
 
     /**
-     * Creates new form pnlWarrantyClaim
+     * Creates new form PnlWarrantyClaimm
      */
     private WarrantyClaimService warrantyClaimService;
     CqlSession cqlSession = createSession();
@@ -66,8 +66,6 @@ public class pnlWarrantyClaim extends javax.swing.JFrame {
         CbbStatus = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
         txtMaBH = new javax.swing.JTextField();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Danh sách bảo hành");
@@ -209,8 +207,8 @@ public class pnlWarrantyClaim extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -224,9 +222,11 @@ public class pnlWarrantyClaim extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void TableDSBHMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TableDSBHMouseClicked
+        tableRowClicked(evt);
+    }//GEN-LAST:event_TableDSBHMouseClicked
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         addClaim();
@@ -239,10 +239,6 @@ public class pnlWarrantyClaim extends javax.swing.JFrame {
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
         deleteClaim();
     }//GEN-LAST:event_btnXoaActionPerformed
-
-    private void TableDSBHMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TableDSBHMouseClicked
-        tableRowClicked(evt);
-    }//GEN-LAST:event_TableDSBHMouseClicked
 
     private void CbbStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CbbStatusActionPerformed
         filterTableByStatus();
@@ -270,7 +266,6 @@ public class pnlWarrantyClaim extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Lỗi khi nộp yêu cầu bảo hành: " + ex.getMessage());
         }
     }
-
     private void updateClaim() {
         try {
             String claimId = txtMaBH.getText();
@@ -291,7 +286,6 @@ public class pnlWarrantyClaim extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Lỗi khi cập nhật yêu cầu bảo hành: " + ex.getMessage());
         }
     }
-
     private void deleteClaim() {
         try {
             String claimId = txtMaBH.getText();
@@ -307,7 +301,6 @@ public class pnlWarrantyClaim extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Lỗi khi xóa yêu cầu bảo hành: " + ex.getMessage());
         }
     }
-
     private void loadStatusIntoComboBox() {
         List<WarrantyClaim> sta = warrantyClaimService.getAllWarrantyClaims();
         CbbStatus.removeAllItems();
@@ -322,7 +315,6 @@ public class pnlWarrantyClaim extends javax.swing.JFrame {
             CbbStatus.addItem(status);
         }
     }
-
     private void filterTableByStatus() {
         String selectedStatus = (String) CbbStatus.getSelectedItem();
         if (selectedStatus == null) {
@@ -359,7 +351,6 @@ public class pnlWarrantyClaim extends javax.swing.JFrame {
             }
         }
     }
-
     public void loadAllClaims() {
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Mã Bảo Hành");
@@ -412,41 +403,6 @@ public class pnlWarrantyClaim extends javax.swing.JFrame {
             CbbStatus.setSelectedItem(claimStatus);
             txtMoTa.setText(issueDescription);
         }
-    }
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(pnlWarrantyClaim.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(pnlWarrantyClaim.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(pnlWarrantyClaim.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(pnlWarrantyClaim.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new pnlWarrantyClaim().setVisible(true);
-            }
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
