@@ -68,8 +68,6 @@ public class pnlExtendedWarranty extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblGiaHanBaoHanh = new javax.swing.JTable();
 
-        setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N

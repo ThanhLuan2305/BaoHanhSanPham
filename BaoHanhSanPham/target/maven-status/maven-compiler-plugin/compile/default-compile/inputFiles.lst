@@ -9,6 +9,7 @@ D:\Document\HocAndCode\HocTap\HK7_Nam4\NoSQL\DoAn\BaoHanhSanPham\src\main\java\D
 D:\Document\HocAndCode\HocTap\HK7_Nam4\NoSQL\DoAn\BaoHanhSanPham\src\main\java\Database\DAO\RepairHistoryDAO.java
 D:\Document\HocAndCode\HocTap\HK7_Nam4\NoSQL\DoAn\BaoHanhSanPham\src\main\java\View\LoginForm.java
 D:\Document\HocAndCode\HocTap\HK7_Nam4\NoSQL\DoAn\BaoHanhSanPham\src\main\java\View\pnlCustomer_Product.java
+
 D:\Document\HocAndCode\HocTap\HK7_Nam4\NoSQL\DoAn\BaoHanhSanPham\src\main\java\Database\Service\RepairHistoryService.java
 D:\Document\HocAndCode\HocTap\HK7_Nam4\NoSQL\DoAn\BaoHanhSanPham\src\main\java\Database\ConnectCassandra.java
 D:\Document\HocAndCode\HocTap\HK7_Nam4\NoSQL\DoAn\BaoHanhSanPham\src\main\java\Database\DAO\WarrantyPolicyDAO.java
@@ -19,6 +20,7 @@ D:\Document\HocAndCode\HocTap\HK7_Nam4\NoSQL\DoAn\BaoHanhSanPham\src\main\java\V
 D:\Document\HocAndCode\HocTap\HK7_Nam4\NoSQL\DoAn\BaoHanhSanPham\src\main\java\Database\Service\WarrantyClaimService.java
 D:\Document\HocAndCode\HocTap\HK7_Nam4\NoSQL\DoAn\BaoHanhSanPham\src\main\java\View\pnlWarrantyPolicy.java
 D:\Document\HocAndCode\HocTap\HK7_Nam4\NoSQL\DoAn\BaoHanhSanPham\src\main\java\Database\DAO\CustomerDAO.java
+D:\Document\HocAndCode\HocTap\HK7_Nam4\NoSQL\DoAn\BaoHanhSanPham\src\main\java\View\pnlHome.java
 D:\Document\HocAndCode\HocTap\HK7_Nam4\NoSQL\DoAn\BaoHanhSanPham\src\main\java\Model\ExtendedWarranty.java
 D:\Document\HocAndCode\HocTap\HK7_Nam4\NoSQL\DoAn\BaoHanhSanPham\src\main\java\View\pnlProduct.java
 D:\Document\HocAndCode\HocTap\HK7_Nam4\NoSQL\DoAn\BaoHanhSanPham\src\main\java\View\pnlWarrantyClaim.java
