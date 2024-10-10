@@ -6,6 +6,9 @@ package Main;
 
 import View.LoginForm;
 import View.MainForm;
+import View.pnlCustomer;
+import View.pnlCustomer_Product;
+import View.pnlProduct;
 import View.pnlWarrantyClaim;
 import View.pnlWarrantyPolicy;
 
