@@ -174,22 +174,32 @@ public class pnlProduct extends javax.swing.JPanel {
         }
     }
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        if(txtSearch.getText()!="") {
+        String search = txtSearch.getText();
+        if(!search.equals("")) {
             Product product = productService.getProductBySerialNumber(txtSearch.getText());
-            String[] columnNames = {"Mã Sản Phẩm", "Số Serial", "Loại Sản Phẩm", "Nhà Sản Xuất", "Ngày Mua", "Ngãy sản xuất", "Ngày hết hạn"};
-            tableModel = new DefaultTableModel(columnNames, 0);
-            tblProduct.setModel(tableModel);
-            tableModel.setRowCount(0); 
-                Object[] rowData = {
-                    product.getProductId(),
-                    product.getSerialNumber(),
-                    product.getProductType(),
-                    product.getManufacturer(),
-                    product.getPurchaseDate(),
-                    product.getWarrantyStartDate(),
-                    product.getWarrantyEndDate()
-                };
+            if(product == null ) {
+                JOptionPane.showMessageDialog(this, "Không có sản phẩm phù hợp." , "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            }
+            else {
+                String[] columnNames = {"Mã Sản Phẩm", "Số Serial", "Loại Sản Phẩm", "Nhà Sản Xuất", "Ngày Mua", "Ngãy sản xuất", "Ngày hết hạn"};
+                tableModel = new DefaultTableModel(columnNames, 0);
+                tblProduct.setModel(tableModel);
+                tableModel.setRowCount(0); 
+                    Object[] rowData = {
+                        product.getProductId(),
+                        product.getSerialNumber(),
+                        product.getProductType(),
+                        product.getManufacturer(),
+                        product.getPurchaseDate(),
+                        product.getWarrantyStartDate(),
+                        product.getWarrantyEndDate()
+                    };
                 tableModel.addRow(rowData);
+            }
+        }
+        else {
+            loadAllProducts();
+            JOptionPane.showMessageDialog(this, "Hãy điền Số serial để tìm kiếm." , "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_btnSearchActionPerformed
 
