@@ -12,6 +12,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.swing.JOptionPane;
+import javax.swing.table.TableModel;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.*;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -58,6 +68,7 @@ public class pnlWarrantyPolicy extends javax.swing.JPanel {
         btnSua = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         TableCSBH = new javax.swing.JTable();
+        btnPDF = new javax.swing.JButton();
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("QUẢN LÝ CHÍNH SÁCH BẢO HÀNH");
@@ -128,6 +139,13 @@ public class pnlWarrantyPolicy extends javax.swing.JPanel {
         });
         jScrollPane2.setViewportView(TableCSBH);
 
+        btnPDF.setText("Xuất File PDF");
+        btnPDF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPDFActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -141,10 +159,12 @@ public class pnlWarrantyPolicy extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnThem)
-                        .addGap(91, 91, 91)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnXoa)
-                        .addGap(70, 70, 70)
-                        .addComponent(btnSua))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnSua)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnPDF, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -184,16 +204,15 @@ public class pnlWarrantyPolicy extends javax.swing.JPanel {
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnXoa)
-                            .addComponent(btnSua)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addGap(55, 55, 55)
-                        .addComponent(btnThem)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnThem)
+                            .addComponent(btnXoa)
+                            .addComponent(btnSua)
+                            .addComponent(btnPDF))))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -235,6 +254,21 @@ public class pnlWarrantyPolicy extends javax.swing.JPanel {
         tableRowClicked(evt);
     }//GEN-LAST:event_TableCSBHMouseClicked
 
+    private void btnPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPDFActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+            String filePath = fileChooser.getSelectedFile().getAbsolutePath();
+            if (!filePath.endsWith(".pdf")) {
+                filePath += ".pdf";
+            }
+            try {
+                exportTableToPDF(TableCSBH, filePath);
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(pnlWarrantyPolicy.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_btnPDFActionPerformed
+
     private void loadProductTypesIntoComboBox() {
         List<WarrantyPolicy> policies = warrantyPolicyService.getAllWarrantyPolicies();
         CbbLoaiSP.removeAllItems();
@@ -247,6 +281,7 @@ public class pnlWarrantyPolicy extends javax.swing.JPanel {
             CbbLoaiSP.addItem(type);
         }
     }
+
     public void loadWarrantyPolicies() {
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Mã Chính Sách");
@@ -269,6 +304,7 @@ public class pnlWarrantyPolicy extends javax.swing.JPanel {
 
         TableCSBH.setModel(model);
     }
+
     private void filterTableByProductType() {
         String selectedProductType = (String) CbbLoaiSP.getSelectedItem();
         if (selectedProductType == null) {
@@ -302,6 +338,7 @@ public class pnlWarrantyPolicy extends javax.swing.JPanel {
             }
         }
     }
+
     private void tableRowClicked(java.awt.event.MouseEvent evt) {
         int selectedRow = TableCSBH.getSelectedRow();
 
@@ -318,6 +355,7 @@ public class pnlWarrantyPolicy extends javax.swing.JPanel {
             txtTGBH.setText(String.valueOf(warrantyDuration));
         }
     }
+
     private void addWarrantyPolicy() {
         try {
             String policyId = txtMaCS.getText();
@@ -335,6 +373,7 @@ public class pnlWarrantyPolicy extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Lỗi khi thêm chính sách: " + ex.getMessage());
         }
     }
+
     private void updateWarrantyPolicy() {
         try {
             String policyId = txtMaCS.getText();
@@ -352,6 +391,7 @@ public class pnlWarrantyPolicy extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Lỗi khi cập nhật chính sách: " + ex.getMessage());
         }
     }
+
     private void deleteWarrantyPolicy() {
         try {
             String policyId = txtMaCS.getText();
@@ -374,9 +414,47 @@ public class pnlWarrantyPolicy extends javax.swing.JPanel {
         CbbLoaiSP.setSelectedIndex(0);
     }
 
+    public static void exportTableToPDF(JTable table, String filePath) throws FileNotFoundException {
+        Document document = new Document();
+        try {
+            PdfWriter.getInstance(document, new FileOutputStream(filePath));
+            document.open();
+            BaseFont baseFont = BaseFont.createFont("c:/windows/fonts/arial.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            Font font = new Font(baseFont, 12, Font.NORMAL);
+            PdfPTable pdfTable = new PdfPTable(table.getColumnCount());
+            TableModel model = table.getModel();
+            for (int col = 0; col < model.getColumnCount(); col++) {
+                pdfTable.addCell(new PdfPCell(new Phrase(model.getColumnName(col), font)));
+            }
+            for (int row = 0; row < model.getRowCount(); row++) {
+                for (int col = 0; col < model.getColumnCount(); col++) {
+                    Object value = model.getValueAt(row, col);
+                    if (value != null) {
+                        pdfTable.addCell(new PdfPCell(new Phrase(value.toString(), font)));
+                    } else {
+                        pdfTable.addCell(new PdfPCell(new Phrase("", font)));
+                    }
+                }
+            }
+            document.add(pdfTable);
+            JOptionPane.showMessageDialog(null, "Dữ liệu đã được xuất ra file PDF thành công!");
+        } catch (DocumentException | FileNotFoundException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Lỗi khi xuất dữ liệu ra PDF: " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Lỗi khác: " + e.getMessage());
+        } finally {
+            if (document.isOpen()) {
+                document.close();
+            }
+        }
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> CbbLoaiSP;
     private javax.swing.JTable TableCSBH;
+    private javax.swing.JButton btnPDF;
     private javax.swing.JButton btnSua;
     private javax.swing.JButton btnThem;
     private javax.swing.JButton btnXoa;
