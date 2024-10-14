@@ -26,9 +26,9 @@ public class ProductDAO {
             product.getSerialNumber(),
             product.getProductType(),
             product.getManufacturer(),
-            product.getPurchaseDate(),          // LocalDate
-            product.getWarrantyStartDate(),     // LocalDate
-            product.getWarrantyEndDate()        // LocalDate
+            product.getPurchaseDate(),         
+            product.getWarrantyStartDate(),    
+            product.getWarrantyEndDate()       
         );
         session.execute(boundStatement);
     }
@@ -41,9 +41,9 @@ public class ProductDAO {
             product.getSerialNumber(),
             product.getProductType(),
             product.getManufacturer(),
-            product.getPurchaseDate(),          // LocalDate
-            product.getWarrantyStartDate(),     // LocalDate
-            product.getWarrantyEndDate(),       // LocalDate
+            product.getPurchaseDate(),          
+            product.getWarrantyStartDate(),    
+            product.getWarrantyEndDate(),      
             product.getProductId()
         );
         session.execute(boundStatement);
@@ -78,7 +78,7 @@ public class ProductDAO {
 
     // Lấy sản phẩm theo serial number
     public Product getProductBySerialNumber(String serialNumber) {
-        String query = "SELECT * FROM products WHERE serial_number = ?";
+        String query = "SELECT * FROM products WHERE serial_number = ? ALLOW FILTERING";
         PreparedStatement preparedStatement = session.prepare(query);
         BoundStatement boundStatement = preparedStatement.bind(serialNumber);
         ResultSet resultSet = session.execute(boundStatement);

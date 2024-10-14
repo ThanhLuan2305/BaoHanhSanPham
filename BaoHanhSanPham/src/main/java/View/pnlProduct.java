@@ -10,6 +10,14 @@ import javax.swing.table.DefaultTableModel;
 import static Database.ConnectCassandra.createSession;
 import Model.Product;
 import java.util.List;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -44,10 +52,9 @@ public class pnlProduct extends javax.swing.JPanel {
         txtSearch = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        btnThem = new javax.swing.JButton();
-        btnXoa = new javax.swing.JButton();
-        btnSua = new javax.swing.JButton();
-        btnExcel = new javax.swing.JButton();
+        btnCSV = new javax.swing.JButton();
+        cbbAscending = new javax.swing.JComboBox<>();
+        cbbField = new javax.swing.JComboBox<>();
 
         tblProduct.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -74,13 +81,26 @@ public class pnlProduct extends javax.swing.JPanel {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel2.setText("Sản Phẩm");
 
-        btnThem.setText("Thêm");
+        btnCSV.setText("Xuất CSV");
+        btnCSV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCSVActionPerformed(evt);
+            }
+        });
 
-        btnXoa.setText("Xóa");
+        cbbAscending.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tăng", "Giảm" }));
+        cbbAscending.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbbAscendingActionPerformed(evt);
+            }
+        });
 
-        btnSua.setText("Sửa");
-
-        btnExcel.setText("Xuất Excel");
+        cbbField.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Loại sản phẩm", "Nhà sản xuất", "Ngày mua", "Ngày sản xuất", "Ngáy hết hạn" }));
+        cbbField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbbFieldActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -90,26 +110,27 @@ public class pnlProduct extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(292, 292, 292)
-                        .addComponent(jLabel2))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(162, 162, 162)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnSearch)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(48, 48, 48)
-                .addComponent(btnThem)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnXoa)
-                .addGap(106, 106, 106)
-                .addComponent(btnSua)
-                .addGap(91, 91, 91)
-                .addComponent(btnExcel)
-                .addGap(58, 58, 58))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(292, 292, 292)
+                                .addComponent(jLabel2))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(162, 162, 162)
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnSearch)))
+                        .addGap(0, 178, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cbbField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(cbbAscending, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnCSV)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -121,21 +142,21 @@ public class pnlProduct extends javax.swing.JPanel {
                     .addComponent(btnSearch)
                     .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnThem)
-                    .addComponent(btnXoa)
-                    .addComponent(btnSua)
-                    .addComponent(btnExcel))
-                .addContainerGap(24, Short.MAX_VALUE))
+                    .addComponent(cbbAscending, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbbField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(8, 8, 8)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnCSV)
+                .addContainerGap(12, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void loadAllProducts() {
         List<Product> products = productService.getAllProducts();
-        String[] columnNames = {"Product ID", "Serial Number", "Product Type", "Manufacturer", "Purchase Date", "Warranty Start Date", "Warranty End Date"};
+        String[] columnNames = {"Mã Sản Phẩm", "Số Serial", "Loại Sản Phẩm", "Nhà Sản Xuất", "Ngày Mua", "Ngãy sản xuất", "Ngày hết hạn"};
         tableModel = new DefaultTableModel(columnNames, 0);
         tblProduct.setModel(tableModel);
         tableModel.setRowCount(0); 
@@ -153,16 +174,121 @@ public class pnlProduct extends javax.swing.JPanel {
         }
     }
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        // TODO add your handling code here:
+        if(txtSearch.getText()!="") {
+            Product product = productService.getProductBySerialNumber(txtSearch.getText());
+            String[] columnNames = {"Mã Sản Phẩm", "Số Serial", "Loại Sản Phẩm", "Nhà Sản Xuất", "Ngày Mua", "Ngãy sản xuất", "Ngày hết hạn"};
+            tableModel = new DefaultTableModel(columnNames, 0);
+            tblProduct.setModel(tableModel);
+            tableModel.setRowCount(0); 
+                Object[] rowData = {
+                    product.getProductId(),
+                    product.getSerialNumber(),
+                    product.getProductType(),
+                    product.getManufacturer(),
+                    product.getPurchaseDate(),
+                    product.getWarrantyStartDate(),
+                    product.getWarrantyEndDate()
+                };
+                tableModel.addRow(rowData);
+        }
     }//GEN-LAST:event_btnSearchActionPerformed
 
+    private void btnCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCSVActionPerformed
+        // TODO add your handling code here:
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Save As");
+
+        fileChooser.setSelectedFile(new File("SaoLuuSP.csv"));
+
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV Files", "csv");
+        fileChooser.setFileFilter(filter);
+
+        int userSelection = fileChooser.showSaveDialog(this);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File fileToSave = fileChooser.getSelectedFile();
+
+            if (!fileToSave.getAbsolutePath().endsWith(".csv")) {
+                fileToSave = new File(fileToSave.getAbsolutePath() + ".csv");
+            }
+
+            String filePath = fileToSave.getAbsolutePath();
+            try {
+                productService.exportProductsToCSV(filePath);
+                JOptionPane.showMessageDialog(this, "Xuất file CSV thành công tại: " + filePath, "Thành công", JOptionPane.INFORMATION_MESSAGE);
+            } catch (IOException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Không thể xuất file: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Người dùng đã hủy bỏ việc lưu file." , "Hủy bỏ", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_btnCSVActionPerformed
+
+    private void cbbFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbFieldActionPerformed
+        
+    }//GEN-LAST:event_cbbFieldActionPerformed
+
+    private void cbbAscendingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbAscendingActionPerformed
+        // TODO add your handling code here:
+        String field = cbbField.getSelectedItem().toString();
+        boolean isAscending = cbbAscending.getSelectedItem().toString().equals("Tăng");
+
+        List<Product> products = productService.getAllProducts();
+
+        Collections.sort(products, new Comparator<Product>() {
+            @Override
+            public int compare(Product p1, Product p2) {
+                int result = 0;
+                switch (field) {
+                    case "Loại sản phẩm":
+                        result = p1.getProductType().compareTo(p2.getProductType());
+                        break;
+                    case "Nhà sản xuất":
+                        result = p1.getManufacturer().compareTo(p2.getManufacturer());
+                        break;
+                    case "Ngày mua":
+                        result = p1.getPurchaseDate().compareTo(p2.getPurchaseDate());
+                        break;
+                    case "Ngày sản xuất":
+                        result = p1.getWarrantyStartDate().compareTo(p2.getWarrantyStartDate());
+                        break;
+                    case "Ngày hết hạn":
+                        result = p1.getWarrantyEndDate().compareTo(p2.getWarrantyEndDate());
+                        break;
+                    default:
+                        break;
+                }
+                return isAscending ? result : -result;
+            }
+        });
+        updateProductTable(products);
+    }//GEN-LAST:event_cbbAscendingActionPerformed
+    private void updateProductTable(List<Product> products) {
+        String[] columnNames = {"Mã Sản Phẩm", "Số Serial", "Loại Sản Phẩm", "Nhà Sản Xuất", "Ngày Mua", "Ngày sản xuất", "Ngày hết hạn"};
+        DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
+        tblProduct.setModel(tableModel);
+
+        // Thêm từng sản phẩm vào bảng
+        for (Product product : products) {
+            Object[] rowData = {
+                product.getProductId(),
+                product.getSerialNumber(),
+                product.getProductType(),
+                product.getManufacturer(),
+                product.getPurchaseDate(),
+                product.getWarrantyStartDate(),
+                product.getWarrantyEndDate()
+            };
+            tableModel.addRow(rowData);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnExcel;
+    private javax.swing.JButton btnCSV;
     private javax.swing.JButton btnSearch;
-    private javax.swing.JButton btnSua;
-    private javax.swing.JButton btnThem;
-    private javax.swing.JButton btnXoa;
+    private javax.swing.JComboBox<String> cbbAscending;
+    private javax.swing.JComboBox<String> cbbField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
