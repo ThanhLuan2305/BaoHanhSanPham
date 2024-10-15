@@ -8,7 +8,9 @@ import Database.DAO.ProductDAO;
 import Model.Product;
 import com.datastax.oss.driver.api.core.CqlSession;
 
-import java.util.Date;
+import com.opencsv.CSVWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 
 public class ProductService {
@@ -42,4 +44,31 @@ public class ProductService {
     public Product getProductBySerialNumber(String serialNumber) {
         return productDAO.getProductBySerialNumber(serialNumber);
     }
+
+    public void exportProductsToCSV(String filePath) throws IOException {
+        FileWriter fileWriter = new FileWriter(filePath);
+
+        CSVWriter csvWriter = new CSVWriter(fileWriter);
+
+        String[] header = { "Product ID", "Serial Number", "Product Type", "Manufacturer", "Purchase Date", "Warranty Start Date", "Warranty End Date" };
+        csvWriter.writeNext(header);
+
+        List<Product> products = getAllProducts(); 
+        for (Product product : products) {
+            String[] productData = {
+                product.getProductId(),
+                product.getSerialNumber(),
+                product.getProductType(),
+                product.getManufacturer(),
+                product.getPurchaseDate().toString(),
+                product.getWarrantyStartDate().toString(),
+                product.getWarrantyEndDate().toString()
+            };
+            csvWriter.writeNext(productData);
+        }
+
+        csvWriter.close();
+        fileWriter.close();
+    }
+    
 }
