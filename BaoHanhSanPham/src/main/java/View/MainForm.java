@@ -19,6 +19,11 @@ public class MainForm extends javax.swing.JFrame {
     private JPanel chillPn;
     public MainForm() {
         initComponents();
+        chillPn = new pnlDashboard();
+        pnlParent.removeAll();
+        pnlParent.add(chillPn);
+        pnlParent.repaint();
+        pnlParent.revalidate();
     }
 
     /**
@@ -39,11 +44,13 @@ public class MainForm extends javax.swing.JFrame {
         btnPrCus = new javax.swing.JButton();
         btnWarrantyPolicy = new javax.swing.JButton();
         btnWarrantyClaim = new javax.swing.JButton();
+        btnDashboard = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         pnlParent.setBackground(new java.awt.Color(204, 0, 0));
         pnlParent.setForeground(new java.awt.Color(255, 51, 51));
+        pnlParent.setVerifyInputWhenFocusTarget(false);
         pnlParent.setLayout(new java.awt.CardLayout());
 
         jPanel1.setBackground(new java.awt.Color(0, 204, 204));
@@ -97,15 +104,23 @@ public class MainForm extends javax.swing.JFrame {
             }
         });
 
+        btnDashboard.setText("Trang chủ");
+        btnDashboard.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDashboardActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(16, 16, 16)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(btnWarrantyPolicy, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnDashboard, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(btnWarrantyPolicy, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
                         .addComponent(btnWarrantyClaim, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnLichSuaChua, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnGiaHanBaoHanh, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
@@ -118,6 +133,8 @@ public class MainForm extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnDashboard, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(btnSanPham, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -215,9 +232,18 @@ public class MainForm extends javax.swing.JFrame {
         pnlParent.revalidate();
     }//GEN-LAST:event_btnWarrantyClaimActionPerformed
 
+    private void btnDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDashboardActionPerformed
+        chillPn = new pnlDashboard();
+        pnlParent.removeAll();
+        pnlParent.add(chillPn);
+        pnlParent.repaint();
+        pnlParent.revalidate();
+    }//GEN-LAST:event_btnDashboardActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCustomer;
+    private javax.swing.JButton btnDashboard;
     private javax.swing.JButton btnGiaHanBaoHanh;
     private javax.swing.JButton btnLichSuaChua;
     private javax.swing.JButton btnPrCus;
