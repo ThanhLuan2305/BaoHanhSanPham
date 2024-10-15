@@ -23,5 +23,18 @@ public class Customer {
         this.address = address;
         this.phone_number = phone_number;
     }
-    
+    public String getCustomerId() {
+        return customer_id;
+    }
+
+    public void setCustomerId(String customer_id) {
+        this.customer_id = customer_id;
+    }
+    public String getPhoneNumber() {
+        return phone_number;
+    }
+
+    public void setPhoneNumber(String phone_number) {
+        this.phone_number = phone_number;
+    }
 }
