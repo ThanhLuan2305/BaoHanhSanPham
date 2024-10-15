@@ -1,4 +1,5 @@
 View\pnlCustomer_Product.class
+View\MainForm$6.class
 View\pnlRepairHistory$1.class
 View\pnlWarrantyPolicy$4.class
 View\pnlCustomer$4.class
@@ -9,6 +10,7 @@ Database\Service\ExtendedWarrantyService.class
 View\pnlRepairHistory$5.class
 View\MainForm.class
 View\pnlExtendedWarranty$2.class
+View\pnlWarrantyClaim$7.class
 Database\Service\WarrantyPolicyService.class
 Database\DAO\ExtendedWarrantyDAO.class
 View\pnlCustomer$1.class
@@ -20,6 +22,7 @@ Database\Service\ProductService.class
 View\pnlExtendedWarranty$4.class
 Database\DAO\WarrantyClaimDAO.class
 Database\DAO\ProductDAO.class
+View\MainForm$7.class
 View\pnlWarrantyClaim$6.class
 View\pnlCustomer$3.class
 View\pnlExtendedWarranty$1.class
@@ -67,6 +70,6 @@ View\pnlCustomer$2.class
 Main\BHSP$1.class
 View\MainForm$2.class
 View\LoginForm$1.class
+View\pnlWarrantyClaim$8.class
 View\pnlExtendedWarranty$3.class
 View\pnlRepairHistory$4.class
-
