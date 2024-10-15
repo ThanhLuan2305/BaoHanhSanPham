@@ -11,6 +11,16 @@ import com.datastax.oss.driver.api.core.CqlSession;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
+import com.google.gson.Gson; // Thư viện Gson để chuyển đổi đối tượng thành JSON
+import javax.swing.JOptionPane; // Để hiển thị thông báo cho người dùng
+import java.io.FileWriter; // Để ghi dữ liệu vào file
+import java.io.IOException; // Để xử lý ngoại lệ liên quan đến I/O
+
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.io.BufferedWriter;
+import java.io.File;
+
 /**
  *
  * @author LENOVO
@@ -71,6 +81,7 @@ public class pnlCustomer extends javax.swing.JPanel {
         textPhoneCustomer = new javax.swing.JTextPane();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        btnexportJson = new javax.swing.JButton();
 
         tblCustomer.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -128,28 +139,41 @@ public class pnlCustomer extends javax.swing.JPanel {
 
         jLabel4.setText("Số điện thoại ");
 
+        btnexportJson.setText("Xuất dữ liệu ");
+        btnexportJson.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnexportJsonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1)
             .addGroup(layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane4)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 119, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(33, 33, 33)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane4)
+                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 119, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(33, 33, 33)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnexportJson)
+                        .addGap(47, 47, 47)))
                 .addGap(40, 40, 40))
             .addGroup(layout.createSequentialGroup()
                 .addGap(133, 133, 133)
@@ -185,7 +209,8 @@ public class pnlCustomer extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btndeleteCustomer)
                     .addComponent(btnaddCustomer)
-                    .addComponent(btnupdateCustomer))
+                    .addComponent(btnupdateCustomer)
+                    .addComponent(btnexportJson))
                 .addContainerGap(60, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -258,10 +283,40 @@ public class pnlCustomer extends javax.swing.JPanel {
         }        // TODO add your handling code here:
     }//GEN-LAST:event_tblCustomerMouseClicked
 
+    private void btnexportJsonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnexportJsonActionPerformed
+         // Tạo một JFileChooser để người dùng chọn đường dẫn lưu file
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Lưu file JSON");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("JSON Files", "json");
+        fileChooser.setFileFilter(filter);
+
+        int userSelection = fileChooser.showSaveDialog(this);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File fileToSave = fileChooser.getSelectedFile();
+
+            // Lấy danh sách khách hàng từ dịch vụ
+            List<Customer> customers = customerService.getAll();
+
+            // Chuyển đổi danh sách khách hàng thành JSON
+            Gson gson = new Gson();
+            String json = gson.toJson(customers);
+
+            // Ghi dữ liệu vào file
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileToSave))) {
+                writer.write(json);
+                JOptionPane.showMessageDialog(this, "Dữ liệu đã được xuất ra file JSON thành công!");
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(this, "Có lỗi xảy ra khi lưu file: " + e.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btnexportJsonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnaddCustomer;
     private javax.swing.JButton btndeleteCustomer;
+    private javax.swing.JButton btnexportJson;
     private javax.swing.JButton btnupdateCustomer;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
