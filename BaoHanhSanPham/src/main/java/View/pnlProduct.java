@@ -8,7 +8,9 @@ import Database.Service.ProductService;
 import com.datastax.oss.driver.api.core.CqlSession;
 import javax.swing.table.DefaultTableModel;
 import static Database.ConnectCassandra.createSession;
+import Database.Service.TypeProductService;
 import Model.Product;
+import Model.TypeProduct;
 import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -29,12 +31,15 @@ public class pnlProduct extends javax.swing.JPanel {
      * Creates new form pnlProduct
      */
     private DefaultTableModel tableModel;
-    private ProductService productService;
+    private final ProductService productService;
+    private final TypeProductService typeProductService;
     CqlSession cqlSession = createSession();
     public pnlProduct() {
         initComponents();
         productService = new ProductService(cqlSession);
+        typeProductService = new TypeProductService(cqlSession);
         loadAllProducts();
+        loadAllTypeProduct();
     }
 
     /**
@@ -98,7 +103,7 @@ public class pnlProduct extends javax.swing.JPanel {
             }
         });
 
-        cbbField.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Loại sản phẩm", "Nhà sản xuất", "Ngày mua", "Ngày sản xuất", "Ngáy hết hạn" }));
+        cbbField.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Loại sản phẩm", "Nhà sản xuất", "Ngày mua", "Ngày sản xuất", "Ngáy hết hạn", "Tên sản phẩm" }));
         cbbField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbbFieldActionPerformed(evt);
@@ -116,6 +121,11 @@ public class pnlProduct extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tblProductType.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblProductTypeMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tblProductType);
 
         jLabel3.setText("Loại sản phẩm");
@@ -178,10 +188,25 @@ public class pnlProduct extends javax.swing.JPanel {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    //tblProductType
+    private void loadAllTypeProduct() {
+        List<TypeProduct> typeproducts = typeProductService.getTypeProduct();
+        String[] columnNames = {"Mã Sản Phẩm", "Mô Tả"};
+        tableModel = new DefaultTableModel(columnNames, 0);
+        tblProductType.setModel(tableModel);
+        tableModel.setRowCount(0); 
+        for (TypeProduct tp : typeproducts) {
+            Object[] rowData = {
+                tp.getProductType(),
+                tp.getDescription(),
+            };
+            tableModel.addRow(rowData);
+        }
+    }
     private void loadAllProducts() {
         List<Product> products = productService.getAllProducts();
-        String[] columnNames = {"Mã Sản Phẩm", "Số Serial", "Loại Sản Phẩm", "Nhà Sản Xuất", "Ngày Mua", "Ngãy sản xuất", "Ngày hết hạn"};
+        String[] columnNames = {"Mã Sản Phẩm", "Số Serial", "Tên Sản Phẩm", "Loại Sản Phẩm", "Nhà Sản Xuất", "Ngày Mua", "Ngãy sản xuất", "Ngày hết hạn"};
         tableModel = new DefaultTableModel(columnNames, 0);
         tblProduct.setModel(tableModel);
         tableModel.setRowCount(0); 
@@ -189,6 +214,7 @@ public class pnlProduct extends javax.swing.JPanel {
             Object[] rowData = {
                 product.getProductId(),
                 product.getSerialNumber(),
+                product.getProductName(),
                 product.getProductType(),
                 product.getManufacturer(),
                 product.getPurchaseDate(),
@@ -206,13 +232,14 @@ public class pnlProduct extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(this, "Không có sản phẩm phù hợp." , "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             }
             else {
-                String[] columnNames = {"Mã Sản Phẩm", "Số Serial", "Loại Sản Phẩm", "Nhà Sản Xuất", "Ngày Mua", "Ngãy sản xuất", "Ngày hết hạn"};
+                String[] columnNames = {"Mã Sản Phẩm", "Số Serial", "Tên Sản Phẩm", "Loại Sản Phẩm", "Nhà Sản Xuất", "Ngày Mua", "Ngãy sản xuất", "Ngày hết hạn"};
                 tableModel = new DefaultTableModel(columnNames, 0);
                 tblProduct.setModel(tableModel);
                 tableModel.setRowCount(0); 
                     Object[] rowData = {
                         product.getProductId(),
                         product.getSerialNumber(),
+                        product.getProductName(),
                         product.getProductType(),
                         product.getManufacturer(),
                         product.getPurchaseDate(),
@@ -279,6 +306,9 @@ public class pnlProduct extends javax.swing.JPanel {
                     case "Loại sản phẩm":
                         result = p1.getProductType().compareTo(p2.getProductType());
                         break;
+                    case "Tên sản phẩm":
+                        result = p1.getProductName().compareTo(p2.getProductName());
+                        break;
                     case "Nhà sản xuất":
                         result = p1.getManufacturer().compareTo(p2.getManufacturer());
                         break;
@@ -299,8 +329,19 @@ public class pnlProduct extends javax.swing.JPanel {
         });
         updateProductTable(products);
     }//GEN-LAST:event_cbbAscendingActionPerformed
+
+    private void tblProductTypeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductTypeMouseClicked
+        // TODO add your handling code here:
+        int selectedRow = tblProductType.getSelectedRow();
+    
+        if (selectedRow != -1) {
+            String selectedId = tblProductType.getValueAt(selectedRow, 0).toString();
+            List<Product> prs = productService.getProductByTypeProduct(selectedId);
+            updateProductTable(prs);
+        }
+    }//GEN-LAST:event_tblProductTypeMouseClicked
     private void updateProductTable(List<Product> products) {
-        String[] columnNames = {"Mã Sản Phẩm", "Số Serial", "Loại Sản Phẩm", "Nhà Sản Xuất", "Ngày Mua", "Ngày sản xuất", "Ngày hết hạn"};
+        String[] columnNames = {"Mã Sản Phẩm", "Số Serial", "Tên Sản Phẩm", "Loại Sản Phẩm", "Nhà Sản Xuất", "Ngày Mua", "Ngày sản xuất", "Ngày hết hạn"};
         DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
         tblProduct.setModel(tableModel);
 
@@ -309,6 +350,7 @@ public class pnlProduct extends javax.swing.JPanel {
             Object[] rowData = {
                 product.getProductId(),
                 product.getSerialNumber(),
+                product.getProductName(),
                 product.getProductType(),
                 product.getManufacturer(),
                 product.getPurchaseDate(),

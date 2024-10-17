@@ -20,11 +20,11 @@ public class TypeProductDAO {
     }
      public List<TypeProduct> getAllTypeProducts() {
         List<TypeProduct> tproducts = new ArrayList<>();
-        String query = "SELECT * FROM products";
+        String query = "SELECT * FROM type_product";
         ResultSet resultSet = session.execute(query);
         for (Row row : resultSet) {
             tproducts.add(new TypeProduct(
-                row.getString("productType"),   
+                row.getString("product_type"),   
                 row.getString("description")
             ));
         }

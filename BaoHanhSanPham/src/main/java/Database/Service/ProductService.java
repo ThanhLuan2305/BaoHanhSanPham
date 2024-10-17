@@ -44,13 +44,16 @@ public class ProductService {
     public Product getProductBySerialNumber(String serialNumber) {
         return productDAO.getProductBySerialNumber(serialNumber);
     }
+    public List<Product> getProductByTypeProduct(String typeProduct) {
+        return productDAO.getProductByTypeProduct(typeProduct);
+    }
 
     public void exportProductsToCSV(String filePath) throws IOException {
         FileWriter fileWriter = new FileWriter(filePath);
 
         CSVWriter csvWriter = new CSVWriter(fileWriter);
 
-        String[] header = { "Product ID", "Serial Number", "Product Type", "Manufacturer", "Purchase Date", "Warranty Start Date", "Warranty End Date" };
+        String[] header = {"Mã Sản Phẩm", "Số Serial", "Tên Sản Phẩm", "Loại Sản Phẩm", "Nhà Sản Xuất", "Ngày Mua", "Ngày sản xuất", "Ngày hết hạn"};
         csvWriter.writeNext(header);
 
         List<Product> products = getAllProducts(); 
@@ -58,6 +61,7 @@ public class ProductService {
             String[] productData = {
                 product.getProductId(),
                 product.getSerialNumber(),
+                product.getProductName(),
                 product.getProductType(),
                 product.getManufacturer(),
                 product.getPurchaseDate().toString(),
