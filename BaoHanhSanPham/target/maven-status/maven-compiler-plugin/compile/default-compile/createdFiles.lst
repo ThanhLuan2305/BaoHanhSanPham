@@ -1,6 +1,4 @@
 View\pnlCustomer_Product.class
-View\MainForm$6.class
-View\pnlRepairHistory$8.class
 View\pnlRepairHistory$1.class
 View\pnlWarrantyPolicy$4.class
 Database\Service\ExtendedWarrantyService.class
@@ -20,9 +18,7 @@ View\pnlWarrantyPolicy$1.class
 Database\DAO\Customer_ProductDAO.class
 View\pnlCustomer_Product$2.class
 View\pnlWarrantyClaim$3.class
-Model\RepairHistory.class
 View\pnlRepairHistory$9.class
-Main\BHSP.class
 View\pnlWarrantyClaim$5.class
 View\pnlProduct$4.class
 Database\ConnectCassandra.class
@@ -31,7 +27,6 @@ View\pnlRepairHistory$6.class
 View\pnlWarrantyPolicy$2.class
 View\pnlCustomer.class
 View\pnlProduct.class
-View\pnlWarrantyPolicy.class
 View\pnlExtendedWarranty$7.class
 Model\Product.class
 View\pnlProduct$3.class
@@ -49,6 +44,7 @@ View\pnlWarrantyPolicy$3.class
 Model\Customer.class
 View\pnlCustomer$2.class
 View\MainForm$6.class
+View\pnlRepairHistory$8.class
 View\pnlCustomer$4.class
 Database\Service\CustomerService.class
 View\pnlCustomer_Product$3.class

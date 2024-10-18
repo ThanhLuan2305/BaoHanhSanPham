@@ -6,11 +6,6 @@ import com.datastax.oss.driver.api.core.cql.*;
 import com.datastax.oss.driver.api.core.cql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Date;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
 
 public class RepairHistoryDAO {
     private final CqlSession session;
@@ -40,7 +35,7 @@ public class RepairHistoryDAO {
         PreparedStatement preparedStatement = session.prepare(query);
         BoundStatement boundStatement = preparedStatement.bind(
             repairHistory.getProductId(),
-            repairHistory.getRepairDate(),           // LocalDate
+            repairHistory.getRepairDate(),          
             repairHistory.getRepairDescription(),
             repairHistory.getStatus(),
             repairHistory.getTechnician(),
@@ -66,7 +61,7 @@ public class RepairHistoryDAO {
             repairHistories.add(new RepairHistory(
                 row.getString("repair_id"),
                 row.getString("product_id"),
-                row.getLocalDate("repair_date"),           // LocalDate
+                row.getLocalDate("repair_date"),           
                 row.getString("repair_description"),
                 row.getString("status"),
                 row.getString("technician")

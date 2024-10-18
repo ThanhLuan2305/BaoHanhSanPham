@@ -7,10 +7,12 @@ package View;
 import static Database.ConnectCassandra.createSession;
 import Database.Service.CustomerService;
 import Database.Service.ProductService;
+import Database.Service.RepairHistoryService;
 import Database.Service.WarrantyClaimService;
 import Database.Service.WarrantyPolicyService;
 import Model.Customer;
 import Model.Product;
+import Model.RepairHistory;
 import Model.WarrantyClaim;
 import Model.WarrantyPolicy;
 import com.datastax.oss.driver.api.core.CqlSession;
@@ -47,7 +49,9 @@ public class pnlDashboard extends javax.swing.JPanel {
     ProductService productService;
     WarrantyClaimService claimService;
     WarrantyPolicyService policyService;
+    RepairHistoryService historyService;
     static List<WarrantyPolicy> lstPolicy = new ArrayList<>() ; 
+    static List<RepairHistory> lstHistory = new ArrayList<>();
     CqlSession cqlSession = createSession();
     public pnlDashboard() {
         initComponents();
@@ -55,9 +59,11 @@ public class pnlDashboard extends javax.swing.JPanel {
         customerService = new CustomerService(cqlSession);
         claimService = new WarrantyClaimService(cqlSession);
         policyService = new WarrantyPolicyService(cqlSession);
+        historyService = new RepairHistoryService(cqlSession);
         List<Product>lstPr = productService.getAllProducts();
         List<Customer>lstCus = customerService.getAll();
         List<WarrantyClaim> lstClaim = claimService.getAllWarrantyClaims();
+        lstHistory = historyService.getAllRepairHistories();
         txtSanPham.setText(lstPr.size()+"");
         txtSoKH.setText(lstCus.size()+"");
         txtSoYC.setText(lstClaim.size()+"");
@@ -65,22 +71,22 @@ public class pnlDashboard extends javax.swing.JPanel {
         if (lstPolicy.isEmpty()) {
             System.out.println("Danh sách chính sách bảo hành rỗng!");
         } else {
-            drawChart(pnlPolicy);
+            drawChart(pnlPolicy, createDatasetPolicy(), "BIỂU CHÍNH SÁCH SẢN PHẨM", "Loại sảng phẩm","Số tháng" );
         }
-        if (lstPolicy.isEmpty()) {
-            System.out.println("Danh sách chính sách bảo hành rỗng!");
+        if (lstHistory.isEmpty()) {
+            System.out.println("Danh sách yêu cầu bảo hành rỗng!");
         } else {
-            drawLineChart(pnlRepair);
+            drawChart(pnlRepair, createDatasetHistory(),"BIỂU ĐỒ TRẠNG THÁI SỬA CHỮA","Trạng thái", "Số lượng");
         }
     }
     
-    public static void drawChart(JPanel pnlPolicy) {
-        DefaultCategoryDataset dataset = createDataset();
+    public static void drawChart(JPanel pnlPolicy,DefaultCategoryDataset dataSet, String title, String nameX, String nameY ) {
+        DefaultCategoryDataset dataset = dataSet;
 
         JFreeChart barChart = ChartFactory.createBarChart(
-                "BIỂU ĐỒ CHÍNH SÁCH BẢO HÀNH",
-                "Loại sản phẩm",
-                "Tháng",
+                title,
+                nameX,
+                nameY,
                 dataset
         );
 
@@ -108,7 +114,7 @@ public class pnlDashboard extends javax.swing.JPanel {
     }
 
 
-    private static DefaultCategoryDataset createDataset() {
+    private static DefaultCategoryDataset createDatasetPolicy() {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (WarrantyPolicy policy : lstPolicy) {
             dataset.addValue(policy.getWarrantyDuration(),  "Thời gian bảo hành", policy.getProductType());
@@ -117,61 +123,28 @@ public class pnlDashboard extends javax.swing.JPanel {
         return dataset;
     }
     
-    public static void drawLineChart(JPanel pnlPolicy) {
-        XYSeriesCollection dataset = createDatasetLineChart();
+    private static DefaultCategoryDataset createDatasetHistory() {
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
-        JFreeChart lineChart = ChartFactory.createXYLineChart(
-                "BIỂU ĐỒ CHÍNH SÁCH BẢO HÀNH",
-                "Số lượng loại sản phẩm",
-                "Tháng",
-                dataset,
-                PlotOrientation.VERTICAL,
-                true,
-                true,
-                false 
-        );
+        Map<String, Integer> statusCountMap = new HashMap<>();
 
-        lineChart.setBackgroundPaint(Color.white);
-        lineChart.getTitle().setFont(new Font("Arial", Font.BOLD, 18));
-
-        XYPlot plot = lineChart.getXYPlot();
-        plot.setBackgroundPaint(Color.lightGray);
-        plot.setDomainGridlinePaint(Color.white);
-        plot.setRangeGridlinePaint(Color.white);
-
-        ChartPanel chartPanel = new ChartPanel(lineChart);
-        chartPanel.setPreferredSize(new Dimension(690, 210));
-
-        pnlPolicy.removeAll();
-        pnlPolicy.setLayout(new BorderLayout());
-        pnlPolicy.add(chartPanel, BorderLayout.CENTER);
-
-        pnlPolicy.revalidate();
-        pnlPolicy.repaint();
-    }
-
-    private static XYSeriesCollection createDatasetLineChart() {
-        XYSeriesCollection dataset = new XYSeriesCollection();
-
-        Map<Integer, Integer> monthCountMap = new HashMap<>();
-
-        for (WarrantyPolicy policy : lstPolicy) {
-            int warrantyDuration = policy.getWarrantyDuration();
-            monthCountMap.put(warrantyDuration, monthCountMap.getOrDefault(warrantyDuration, 0) + 1);
+        for (RepairHistory repair : lstHistory) {
+            String status = repair.getStatus();
+            statusCountMap.put(status, statusCountMap.getOrDefault(status, 0) + 1);
         }
 
-        XYSeries series = new XYSeries("Tháng theo số lượng sản phẩm");
-
-        for (Map.Entry<Integer, Integer> entry : monthCountMap.entrySet()) {
-            int month = entry.getKey();
+        for (Map.Entry<String, Integer> entry : statusCountMap.entrySet()) {
+            String status = entry.getKey();
             int count = entry.getValue();
-            series.add(count, month);
+            dataset.addValue(count, "Số lượng trạng thái", status);
         }
-
-        dataset.addSeries(series);
 
         return dataset;
     }
+
+    
+    
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -350,7 +323,7 @@ public class pnlDashboard extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE))
                 .addGap(28, 28, 28)
                 .addComponent(pnlPolicy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)

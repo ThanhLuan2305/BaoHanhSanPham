@@ -112,6 +112,7 @@ public class ProductDAO {
         }
 
         return productTypesAndNames;
+    }
     public List<Product> getProductByTypeProduct(String typeProduct) {
         List<Product> products = new ArrayList<>();
         String query = "SELECT * FROM products WHERE product_type = ? ALLOW FILTERING";
