@@ -318,6 +318,9 @@
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="TableKHMouseClicked"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="pnlWarrantyClaim_TableKH"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>
