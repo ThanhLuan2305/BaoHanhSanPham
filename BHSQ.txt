@@ -1,31 +1,27 @@
-DROP KEYSPACE BHSP;
-CREATE KEYSPACE BHSP WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1};
+DROP KEYSPACE bhsp;
+CREATE KEYSPACE bhsp WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1};
 Use BHSP
+CREATE TABLE account (
+    username TEXT PRIMARY KEY, 
+    password TEXT,
+);
+CREATE TABLE type_product (
+    product_type TEXT PRIMARY KEY,
+    description TEXT
+);
 CREATE TABLE products (
-    product_id TEXT PRIMARY KEY, 
+    product_id TEXT,
     serial_number TEXT,
     product_type TEXT,
+    product_name TEXT,
     manufacturer TEXT,
     purchase_date DATE,
     warranty_start_date DATE,
-    warranty_end_date DATE
+    warranty_end_date DATE,
+    PRIMARY KEY (product_id, product_type)
 );
 
--- Thêm dữ liệu
-INSERT INTO products (product_id, serial_number, product_type, manufacturer, purchase_date, warranty_start_date, warranty_end_date)
-VALUES ('P001', 'SN12345', 'Laptop', 'Dell', '2023-01-10', '2023-01-12', '2025-01-12');
 
-INSERT INTO products (product_id, serial_number, product_type, manufacturer, purchase_date, warranty_start_date, warranty_end_date)
-VALUES ('P002', 'SN12346', 'Smartphone', 'Apple', '2023-05-15', '2023-05-16', '2024-05-16');
-
-INSERT INTO products (product_id, serial_number, product_type, manufacturer, purchase_date, warranty_start_date, warranty_end_date)
-VALUES ('P003', 'SN12347', 'TV', 'Samsung', '2022-09-20', '2022-09-21', '2024-09-21');
-
-INSERT INTO products (product_id, serial_number, product_type, manufacturer, purchase_date, warranty_start_date, warranty_end_date)
-VALUES ('P004', 'SN12348', 'Washing Machine', 'LG', '2021-11-30', '2021-12-01', '2023-12-01');
-
-INSERT INTO products (product_id, serial_number, product_type, manufacturer, purchase_date, warranty_start_date, warranty_end_date)
-VALUES ('P005', 'SN12349', 'Refrigerator', 'Panasonic', '2020-03-25', '2020-03-26', '2023-03-26');
 
 CREATE TABLE customers (
     customer_id TEXT PRIMARY KEY, 
@@ -34,43 +30,12 @@ CREATE TABLE customers (
     phone_number TEXT      
 );
 
--- Thêm dữ liệu
-INSERT INTO customers (customer_id, name, address, phone_number)
-VALUES ('C001', 'John Doe', '123 Main St, New York', '555-1234');
-
-INSERT INTO customers (customer_id, name, address, phone_number)
-VALUES ('C002', 'Jane Smith', '456 Oak St, Los Angeles', '555-5678');
-
-INSERT INTO customers (customer_id, name, address, phone_number)
-VALUES ('C003', 'Michael Johnson', '789 Pine St, Chicago', '555-9876');
-
-INSERT INTO customers (customer_id, name, address, phone_number)
-VALUES ('C004', 'Emily Davis', '321 Elm St, Miami', '555-6543');
-
-INSERT INTO customers (customer_id, name, address, phone_number)
-VALUES ('C005', 'David Wilson', '654 Maple St, Seattle', '555-4321');
-
 CREATE TABLE customer_products (
     customer_id TEXT,  
     product_id TEXT,
     PRIMARY KEY (customer_id, product_id)
 );
 
--- Thêm dữ liệu
-INSERT INTO customer_products (customer_id, product_id)
-VALUES ('C001', 'P001');
-
-INSERT INTO customer_products (customer_id, product_id)
-VALUES ('C002', 'P002');
-
-INSERT INTO customer_products (customer_id, product_id)
-VALUES ('C003', 'P003');
-
-INSERT INTO customer_products (customer_id, product_id)
-VALUES ('C004', 'P004');
-
-INSERT INTO customer_products (customer_id, product_id)
-VALUES ('C005', 'P005');
 
 CREATE TABLE warranty_claims (
     claim_id TEXT PRIMARY KEY, 
@@ -81,45 +46,16 @@ CREATE TABLE warranty_claims (
     claim_status TEXT
 );
 
--- Thêm dữ liệu
-INSERT INTO warranty_claims (claim_id, customer_id, product_id, claim_date, issue_description, claim_status)
-VALUES ('CL001', 'C001', 'P001', '2024-02-15', 'Battery issue', 'Pending');
-
-INSERT INTO warranty_claims (claim_id, customer_id, product_id, claim_date, issue_description, claim_status)
-VALUES ('CL002', 'C002', 'P002', '2024-03-20', 'Screen flickering', 'Approved');
-
-INSERT INTO warranty_claims (claim_id, customer_id, product_id, claim_date, issue_description, claim_status)
-VALUES ('CL003', 'C003', 'P003', '2024-04-05', 'Overheating', 'Rejected');
-
-INSERT INTO warranty_claims (claim_id, customer_id, product_id, claim_date, issue_description, claim_status)
-VALUES ('CL004', 'C004', 'P004', '2024-05-10', 'No power', 'Completed');
-
-INSERT INTO warranty_claims (claim_id, customer_id, product_id, claim_date, issue_description, claim_status)
-VALUES ('CL005', 'C005', 'P005', '2024-06-12', 'Software issue', 'Pending');
 
 CREATE TABLE repair_history (
     repair_id TEXT PRIMARY KEY,          
     product_id TEXT,    
     repair_date DATE,      
     repair_description TEXT,  
+    status TEXT,
     technician TEXT
 );
 
--- Thêm dữ liệu
-INSERT INTO repair_history (repair_id, product_id, repair_date, repair_description, technician)
-VALUES ('R001', 'P001', '2024-01-15', 'Replaced battery', 'Tech A');
-
-INSERT INTO repair_history (repair_id, product_id, repair_date, repair_description, technician)
-VALUES ('R002', 'P002', '2024-02-22', 'Repaired screen', 'Tech B');
-
-INSERT INTO repair_history (repair_id, product_id, repair_date, repair_description, technician)
-VALUES ('R003', 'P003', '2024-03-05', 'Replaced power supply', 'Tech C');
-
-INSERT INTO repair_history (repair_id, product_id, repair_date, repair_description, technician)
-VALUES ('R004', 'P004', '2024-04-10', 'Fixed overheating issue', 'Tech D');
-
-INSERT INTO repair_history (repair_id, product_id, repair_date, repair_description, technician)
-VALUES ('R005', 'P005', '2024-05-18', 'Updated software', 'Tech E');
 
 CREATE TABLE warranty_policies (
     policy_id TEXT PRIMARY KEY, 
@@ -129,43 +65,147 @@ CREATE TABLE warranty_policies (
     conditions TEXT
 );
 
--- Thêm dữ liệu
-INSERT INTO warranty_policies (policy_id, product_type, policy_description, warranty_duration, conditions)
-VALUES ('WP001', 'Laptop', 'Covers hardware issues for 2 years', 24, 'Excludes accidental damage');
-
-INSERT INTO warranty_policies (policy_id, product_type, policy_description, warranty_duration, conditions)
-VALUES ('WP002', 'Smartphone', 'Covers hardware and software issues for 1 year', 12, 'Excludes water damage');
-
-INSERT INTO warranty_policies (policy_id, product_type, policy_description, warranty_duration, conditions)
-VALUES ('WP003', 'TV', 'Covers display and electrical issues for 2 years', 24, 'No screen damage covered');
-
-INSERT INTO warranty_policies (policy_id, product_type, policy_description, warranty_duration, conditions)
-VALUES ('WP004', 'Washing Machine', 'Covers motor and drum issues for 3 years', 36, 'No coverage for misuse');
-
-INSERT INTO warranty_policies (policy_id, product_type, policy_description, warranty_duration, conditions)
-VALUES ('WP005', 'Refrigerator', 'Covers cooling system for 3 years', 36, 'Excludes door seal issues');
 
 CREATE TABLE extended_warranty (
     extended_warranty_id TEXT PRIMARY KEY,
     product_id TEXT, 
-    extension_fee DECIMAL,          
+    extension_fee DOUBLE,      
     new_warranty_end_date DATE
 );
+--Thêm dữ liệu cho type_product
+INSERT INTO type_product (product_type, description)
+VALUES ('Laptop', 'Máy tính xách tay');
 
--- Thêm dữ liệu
+INSERT INTO type_product (product_type, description)
+VALUES ('DienThoai', 'Thiết bị di động');
+
+INSERT INTO type_product (product_type, description)
+VALUES ('MayGiat', 'Máy giặt quần áo');
+
+INSERT INTO type_product (product_type, description)
+VALUES ('Tivi', 'Máy truyền hình');
+
+INSERT INTO type_product (product_type, description)
+VALUES ('TuLanh', 'Tủ lạnh');
+
+-- Thêm dữ liệu vào bảng products
+INSERT INTO products (product_id, serial_number, product_type, product_name, manufacturer, purchase_date, warranty_start_date, warranty_end_date)
+VALUES 
+('P001', 'SN123456', 'Laptop', 'Laptop Dell XPS 13', 'Dell', '2023-01-01', '2023-01-15', '2024-01-15');
+
+INSERT INTO products (product_id, serial_number, product_type, product_name, manufacturer, purchase_date, warranty_start_date, warranty_end_date)
+VALUES ('P002', 'SN789012', 'DienThoai', 'iPhone 14 Pro', 'Apple', '2023-02-20', '2023-03-01', '2024-03-01');
+
+INSERT INTO products (product_id, serial_number, product_type, product_name, manufacturer, purchase_date, warranty_start_date, warranty_end_date)
+VALUES ('P003', 'SN345678', 'MayGiat', 'Máy giặt LG Inverter', 'LG', '2023-03-15', '2023-04-01', '2025-04-01');
+
+INSERT INTO products (product_id, serial_number, product_type, product_name, manufacturer, purchase_date, warranty_start_date, warranty_end_date)
+VALUES ('P004', 'SN901234', 'Tivi', 'Tivi Samsung 55 inch', 'Samsung', '2023-04-10', '2023-04-20', '2024-04-20');
+
+INSERT INTO products (product_id, serial_number, product_type, product_name, manufacturer, purchase_date, warranty_start_date, warranty_end_date)
+VALUES ('P005', 'SN567890', 'TuLanh', 'Tủ lạnh Panasonic 450L', 'Panasonic', '2023-05-05', '2023-05-10', '2026-05-10');
+
+-- Thêm dữ liệu vào bảng customers
+INSERT INTO customers (customer_id, name, address, phone_number)
+VALUES 
+('C001', 'Nguyễn Văn A', '123 Đường 1, Quận 1, TP.HCM', '0901234567');
+
+INSERT INTO customers (customer_id, name, address, phone_number)
+VALUES ('C002', 'Trần Thị B', '456 Đường 2, Quận 2, TP.HCM', '0912345678');
+
+INSERT INTO customers (customer_id, name, address, phone_number)
+VALUES ('C003', 'Lê Văn C', '789 Đường 3, Quận 3, TP.HCM', '0923456789');
+
+INSERT INTO customers (customer_id, name, address, phone_number)
+VALUES ('C004', 'Phạm Thị D', '321 Đường 4, Quận 4, TP.HCM', '0934567890');
+
+INSERT INTO customers (customer_id, name, address, phone_number)
+VALUES ('C005', 'Đỗ Văn E', '654 Đường 5, Quận 5, TP.HCM', '0945678901');
+
+-- Thêm dữ liệu vào bảng customer_products
+INSERT INTO customer_products (customer_id, product_id)
+VALUES 
+('C001', 'P001');
+
+INSERT INTO customer_products (customer_id, product_id)
+VALUES ('C002', 'P002');
+
+INSERT INTO customer_products (customer_id, product_id)
+VALUES ('C003', 'P003');
+
+INSERT INTO customer_products (customer_id, product_id)
+VALUES ('C001', 'P004');
+
+INSERT INTO customer_products (customer_id, product_id)
+VALUES ('C004', 'P005');
+
+-- Thêm dữ liệu vào bảng warranty_claims
+INSERT INTO warranty_claims (claim_id, customer_id, product_id, claim_date, issue_description, claim_status)
+VALUES 
+('CL001', 'C001', 'P001', '2023-02-01', 'Màn hình bị nứt', 'Đang xử lý');
+
+INSERT INTO warranty_claims (claim_id, customer_id, product_id, claim_date, issue_description, claim_status)
+VALUES ('CL002', 'C002', 'P002', '2023-03-10', 'Pin yếu', 'Đã hoàn thành');
+
+INSERT INTO warranty_claims (claim_id, customer_id, product_id, claim_date, issue_description, claim_status)
+VALUES ('CL003', 'C003', 'P003', '2023-04-15', 'Nước rò rỉ', 'Đang xử lý');
+
+INSERT INTO warranty_claims (claim_id, customer_id, product_id, claim_date, issue_description, claim_status)
+VALUES ('CL004', 'C004', 'P004', '2023-05-20', 'Âm thanh không hoạt động', 'Chờ phản hồi');
+
+INSERT INTO warranty_claims (claim_id, customer_id, product_id, claim_date, issue_description, claim_status)
+VALUES ('CL005', 'C005', 'P005', '2023-06-25', 'Tủ lạnh không lạnh', 'Đang xử lý');
+
+-- Thêm dữ liệu vào bảng repair_history
+INSERT INTO repair_history (repair_id, product_id, repair_date, repair_description, status, technician)
+VALUES 
+('R001', 'P001', '2023-02-10', 'Thay màn hình', 'Hoàn thành', 'Nguyễn Văn T');
+
+INSERT INTO repair_history (repair_id, product_id, repair_date, repair_description, status, technician)
+VALUES ('R002', 'P002', '2023-03-15', 'Thay pin', 'Hoàn thành', 'Trần Văn S');
+
+INSERT INTO repair_history (repair_id, product_id, repair_date, repair_description, status, technician)
+VALUES ('R003', 'P003', '2023-04-20', 'Sửa nước rò rỉ', 'Hoàn thành', 'Lê Văn M');
+
+INSERT INTO repair_history (repair_id, product_id, repair_date, repair_description, status, technician)
+VALUES ('R004', 'P004', '2023-05-30', 'Sửa âm thanh', 'Đang xử lý', 'Phạm Văn Q');
+
+INSERT INTO repair_history (repair_id, product_id, repair_date, repair_description, status, technician)
+VALUES ('R005', 'P005', '2023-07-10', 'Thay block lạnh', 'Hoàn thành', 'Đỗ Văn R');
+
+-- Thêm dữ liệu vào bảng warranty_policies
+INSERT INTO warranty_policies (policy_id, product_type, policy_description, warranty_duration, conditions)
+VALUES 
+('P001', 'Laptop', 'Bảo hành 1 năm', 12, 'Bảo hành cho lỗi kỹ thuật');
+
+INSERT INTO warranty_policies (policy_id, product_type, policy_description, warranty_duration, conditions)
+VALUES ('P002', 'DienThoai', 'Bảo hành 1 năm', 12, 'Bảo hành cho lỗi phần cứng');
+
+INSERT INTO warranty_policies (policy_id, product_type, policy_description, warranty_duration, conditions)
+VALUES ('P003', 'MayGiat', 'Bảo hành 2 năm', 24, 'Bảo hành cho lỗi kỹ thuật');
+
+INSERT INTO warranty_policies (policy_id, product_type, policy_description, warranty_duration, conditions)
+VALUES ('P004', 'Tivi', 'Bảo hành 1 năm', 12, 'Bảo hành cho lỗi phần cứng');
+
+INSERT INTO warranty_policies (policy_id, product_type, policy_description, warranty_duration, conditions)
+VALUES ('P005', 'TuLanh', 'Bảo hành 3 năm', 36, 'Bảo hành cho lỗi kỹ thuật');
+
+-- Thêm dữ liệu vào bảng extended_warranty
 INSERT INTO extended_warranty (extended_warranty_id, product_id, extension_fee, new_warranty_end_date)
-VALUES ('EW001', 'P001', 100.00, '2026-01-12');
+VALUES 
+('EW001', 'P001', 500000, '2024-02-01');
 
 INSERT INTO extended_warranty (extended_warranty_id, product_id, extension_fee, new_warranty_end_date)
-VALUES ('EW002', 'P002', 150.00, '2025-05-16');
+VALUES ('EW002', 'P002', 300000, '2024-03-10');
 
 INSERT INTO extended_warranty (extended_warranty_id, product_id, extension_fee, new_warranty_end_date)
-VALUES ('EW003', 'P003', 120.00, '2025-09-21');
+VALUES ('EW003', 'P003', 600000, '2025-04-15');
 
 INSERT INTO extended_warranty (extended_warranty_id, product_id, extension_fee, new_warranty_end_date)
-VALUES ('EW004', 'P004', 80.00, '2026-12-01');
+VALUES ('EW004', 'P004', 400000, '2024-05-20');
 
 INSERT INTO extended_warranty (extended_warranty_id, product_id, extension_fee, new_warranty_end_date)
-VALUES ('EW005', 'P005', 90.00, '2026-03-26');
+VALUES ('EW005', 'P005', 700000, '2026-06-25');
 
-
+INSERT INTO account (username, password)
+VALUES ('admin', '1q2w3e4$');

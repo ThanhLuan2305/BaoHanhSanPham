@@ -4,6 +4,14 @@
  */
 package View;
 
+import static Database.ConnectCassandra.createSession;
+import Database.Service.AccountService;
+import Model.Account;
+import com.datastax.oss.driver.api.core.CqlSession;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author ADMIN
@@ -13,7 +21,13 @@ public class LoginForm extends javax.swing.JFrame {
     /**
      * Creates new form LoginForm
      */
+    AccountService accountService;
+    CqlSession cqlSession = createSession();
+    static List<Account> lst = new ArrayList<>();
     public LoginForm() {
+        accountService = new AccountService(cqlSession);
+        lst = accountService.getAll();
+        this.setLocationRelativeTo(null);
         initComponents();
     }
 
@@ -29,10 +43,10 @@ public class LoginForm extends javax.swing.JFrame {
         jCheckBox1 = new javax.swing.JCheckBox();
         jLabel1 = new javax.swing.JLabel();
         txtTK = new javax.swing.JTextField();
-        txtPassword = new javax.swing.JTextField();
         btnDN = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        txtPassword = new javax.swing.JPasswordField();
 
         jCheckBox1.setText("jCheckBox1");
         jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
@@ -42,6 +56,7 @@ public class LoginForm extends javax.swing.JFrame {
         });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Đăng nhập");
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("ĐĂNG NHẬP");
@@ -56,10 +71,22 @@ public class LoginForm extends javax.swing.JFrame {
         btnDN.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnDN.setForeground(new java.awt.Color(0, 0, 255));
         btnDN.setText("Đăng nhập");
+        btnDN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDNActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("Tài khoản");
 
         jLabel3.setText("Mật khẩu");
+
+        txtPassword.setText("jPasswordField1");
+        txtPassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPasswordActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -78,8 +105,8 @@ public class LoginForm extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel2)
                             .addComponent(jLabel3)
-                            .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                            .addComponent(txtTK))))
+                            .addComponent(txtTK, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                            .addComponent(txtPassword))))
                 .addContainerGap(68, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -93,9 +120,9 @@ public class LoginForm extends javax.swing.JFrame {
                 .addComponent(txtTK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(54, 54, 54)
+                .addGap(48, 48, 48)
                 .addComponent(btnDN)
                 .addGap(35, 35, 35))
         );
@@ -111,6 +138,34 @@ public class LoginForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtTKActionPerformed
 
+    private void btnDNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDNActionPerformed
+        // TODO add your handling code here:
+        if(txtTK.getText()== null || txtPassword.getPassword() == null) {
+            JOptionPane.showMessageDialog(this, "Hãy điền thông tin trước khi đăng nhập." , "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else {
+            String username = txtTK.getText();
+            char[] passwordCharArray = txtPassword.getPassword();
+            String password =  String.valueOf(passwordCharArray);
+            Account account = accountService.login(username, password);
+            if(account != null) {
+                JOptionPane.showMessageDialog(this, "Đăng nhập thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+
+                MainForm mainForm = new MainForm();
+                mainForm.setVisible(true);
+
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Sai tài khoản hoặc mật khẩu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnDNActionPerformed
+
+    private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
+        // TODO add your handling code here:
+            btnDN.doClick();
+    }//GEN-LAST:event_txtPasswordActionPerformed
+
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -119,7 +174,7 @@ public class LoginForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JTextField txtPassword;
+    private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtTK;
     // End of variables declaration//GEN-END:variables
 }

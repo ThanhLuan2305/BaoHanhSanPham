@@ -102,7 +102,7 @@ public class ProductDAO {
     public List<String[]> getProductTypesAndNames() {
         List<String[]> productTypesAndNames = new ArrayList<>();
 
-        String query = "SELECT product_type, product_name FROM products";  // Truy vấn chỉ lấy 2 cột product_type và product_name
+        String query = "SELECT product_type, product_name FROM products";  
         ResultSet resultSet = session.execute(query);
 
         for (Row row : resultSet) {

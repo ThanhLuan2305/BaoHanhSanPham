@@ -9,6 +9,7 @@ D:\Document\HocAndCode\HocTap\HK7_Nam4\NoSQL\DoAn\BaoHanhSanPham\src\main\java\M
 D:\Document\HocAndCode\HocTap\HK7_Nam4\NoSQL\DoAn\BaoHanhSanPham\src\main\java\Database\DAO\TypeProductDAO.java
 D:\Document\HocAndCode\HocTap\HK7_Nam4\NoSQL\DoAn\BaoHanhSanPham\src\main\java\Database\Service\TypeProductService.java
 D:\Document\HocAndCode\HocTap\HK7_Nam4\NoSQL\DoAn\BaoHanhSanPham\src\main\java\Database\Service\WarrantyPolicyService.java
+D:\Document\HocAndCode\HocTap\HK7_Nam4\NoSQL\DoAn\BaoHanhSanPham\src\main\java\Model\Account.java
 D:\Document\HocAndCode\HocTap\HK7_Nam4\NoSQL\DoAn\BaoHanhSanPham\src\main\java\Database\DAO\Customer_ProductDAO.java
 D:\Document\HocAndCode\HocTap\HK7_Nam4\NoSQL\DoAn\BaoHanhSanPham\src\main\java\Database\DAO\RepairHistoryDAO.java
 D:\Document\HocAndCode\HocTap\HK7_Nam4\NoSQL\DoAn\BaoHanhSanPham\src\main\java\View\LoginForm.java
@@ -28,8 +29,10 @@ D:\Document\HocAndCode\HocTap\HK7_Nam4\NoSQL\DoAn\BaoHanhSanPham\src\main\java\V
 D:\Document\HocAndCode\HocTap\HK7_Nam4\NoSQL\DoAn\BaoHanhSanPham\src\main\java\Model\TypeProduct.java
 D:\Document\HocAndCode\HocTap\HK7_Nam4\NoSQL\DoAn\BaoHanhSanPham\src\main\java\View\pnlWarrantyClaim.java
 D:\Document\HocAndCode\HocTap\HK7_Nam4\NoSQL\DoAn\BaoHanhSanPham\src\main\java\Database\DAO\WarrantyClaimDAO.java
+D:\Document\HocAndCode\HocTap\HK7_Nam4\NoSQL\DoAn\BaoHanhSanPham\src\main\java\Database\Service\AccountService.java
 D:\Document\HocAndCode\HocTap\HK7_Nam4\NoSQL\DoAn\BaoHanhSanPham\src\main\java\Database\DAO\ExtendedWarrantyDAO.java
 D:\Document\HocAndCode\HocTap\HK7_Nam4\NoSQL\DoAn\BaoHanhSanPham\src\main\java\Model\WarrantyClaim.java
+D:\Document\HocAndCode\HocTap\HK7_Nam4\NoSQL\DoAn\BaoHanhSanPham\src\main\java\Database\DAO\AccountDAO.java
 D:\Document\HocAndCode\HocTap\HK7_Nam4\NoSQL\DoAn\BaoHanhSanPham\src\main\java\Model\RepairHistory.java
 D:\Document\HocAndCode\HocTap\HK7_Nam4\NoSQL\DoAn\BaoHanhSanPham\src\main\java\Model\Product.java
 D:\Document\HocAndCode\HocTap\HK7_Nam4\NoSQL\DoAn\BaoHanhSanPham\src\main\java\Database\Service\CustomerService.java
