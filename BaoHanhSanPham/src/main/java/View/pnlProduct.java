@@ -8,7 +8,9 @@ import Database.Service.ProductService;
 import com.datastax.oss.driver.api.core.CqlSession;
 import javax.swing.table.DefaultTableModel;
 import static Database.ConnectCassandra.createSession;
+import Database.Service.TypeProductService;
 import Model.Product;
+import Model.TypeProduct;
 import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -29,12 +31,15 @@ public class pnlProduct extends javax.swing.JPanel {
      * Creates new form pnlProduct
      */
     private DefaultTableModel tableModel;
-    private ProductService productService;
+    private final ProductService productService;
+    private final TypeProductService typeProductService;
     CqlSession cqlSession = createSession();
     public pnlProduct() {
         initComponents();
         productService = new ProductService(cqlSession);
+        typeProductService = new TypeProductService(cqlSession);
         loadAllProducts();
+        loadAllTypeProduct();
     }
 
     /**
@@ -55,6 +60,9 @@ public class pnlProduct extends javax.swing.JPanel {
         btnCSV = new javax.swing.JButton();
         cbbAscending = new javax.swing.JComboBox<>();
         cbbField = new javax.swing.JComboBox<>();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblProductType = new javax.swing.JTable();
+        jLabel3 = new javax.swing.JLabel();
 
         tblProduct.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -95,68 +103,110 @@ public class pnlProduct extends javax.swing.JPanel {
             }
         });
 
-        cbbField.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Loại sản phẩm", "Nhà sản xuất", "Ngày mua", "Ngày sản xuất", "Ngáy hết hạn" }));
+        cbbField.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Loại sản phẩm", "Nhà sản xuất", "Ngày mua", "Ngày sản xuất", "Ngáy hết hạn", "Tên sản phẩm" }));
         cbbField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbbFieldActionPerformed(evt);
             }
         });
 
+        tblProductType.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tblProductType.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblProductTypeMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tblProductType);
+
+        jLabel3.setText("Loại sản phẩm");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 721, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnCSV)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cbbField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cbbAscending, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(292, 292, 292)
-                                .addComponent(jLabel2))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(162, 162, 162)
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(137, 137, 137))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnSearch)))
-                        .addGap(0, 178, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cbbField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(cbbAscending, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnCSV)))
-                .addContainerGap())
+                                .addComponent(btnSearch)))))
+                .addGap(0, 24, Short.MAX_VALUE))
+            .addComponent(jScrollPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(jLabel2)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSearch)
-                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(57, 57, 57)
+                        .addComponent(jLabel2)
+                        .addGap(28, 28, 28)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnSearch)
+                            .addComponent(jLabel1)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbbAscending, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbbField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(8, 8, 8)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnCSV)
-                .addContainerGap(12, Short.MAX_VALUE))
+                    .addComponent(cbbField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCSV))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    //tblProductType
+    private void loadAllTypeProduct() {
+        List<TypeProduct> typeproducts = typeProductService.getTypeProduct();
+        String[] columnNames = {"Mã Sản Phẩm", "Mô Tả"};
+        tableModel = new DefaultTableModel(columnNames, 0);
+        tblProductType.setModel(tableModel);
+        tableModel.setRowCount(0); 
+        for (TypeProduct tp : typeproducts) {
+            Object[] rowData = {
+                tp.getProductType(),
+                tp.getDescription(),
+            };
+            tableModel.addRow(rowData);
+        }
+    }
     private void loadAllProducts() {
         List<Product> products = productService.getAllProducts();
-        String[] columnNames = {"Mã Sản Phẩm", "Số Serial", "Loại Sản Phẩm", "Nhà Sản Xuất", "Ngày Mua", "Ngãy sản xuất", "Ngày hết hạn"};
+        String[] columnNames = {"Mã Sản Phẩm", "Số Serial", "Tên Sản Phẩm", "Loại Sản Phẩm", "Nhà Sản Xuất", "Ngày Mua", "Ngãy sản xuất", "Ngày hết hạn"};
         tableModel = new DefaultTableModel(columnNames, 0);
         tblProduct.setModel(tableModel);
         tableModel.setRowCount(0); 
@@ -164,6 +214,7 @@ public class pnlProduct extends javax.swing.JPanel {
             Object[] rowData = {
                 product.getProductId(),
                 product.getSerialNumber(),
+                product.getProductName(),
                 product.getProductType(),
                 product.getManufacturer(),
                 product.getPurchaseDate(),
@@ -181,13 +232,14 @@ public class pnlProduct extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(this, "Không có sản phẩm phù hợp." , "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             }
             else {
-                String[] columnNames = {"Mã Sản Phẩm", "Số Serial", "Loại Sản Phẩm", "Nhà Sản Xuất", "Ngày Mua", "Ngãy sản xuất", "Ngày hết hạn"};
+                String[] columnNames = {"Mã Sản Phẩm", "Số Serial", "Tên Sản Phẩm", "Loại Sản Phẩm", "Nhà Sản Xuất", "Ngày Mua", "Ngãy sản xuất", "Ngày hết hạn"};
                 tableModel = new DefaultTableModel(columnNames, 0);
                 tblProduct.setModel(tableModel);
                 tableModel.setRowCount(0); 
                     Object[] rowData = {
                         product.getProductId(),
                         product.getSerialNumber(),
+                        product.getProductName(),
                         product.getProductType(),
                         product.getManufacturer(),
                         product.getPurchaseDate(),
@@ -254,6 +306,9 @@ public class pnlProduct extends javax.swing.JPanel {
                     case "Loại sản phẩm":
                         result = p1.getProductType().compareTo(p2.getProductType());
                         break;
+                    case "Tên sản phẩm":
+                        result = p1.getProductName().compareTo(p2.getProductName());
+                        break;
                     case "Nhà sản xuất":
                         result = p1.getManufacturer().compareTo(p2.getManufacturer());
                         break;
@@ -274,8 +329,19 @@ public class pnlProduct extends javax.swing.JPanel {
         });
         updateProductTable(products);
     }//GEN-LAST:event_cbbAscendingActionPerformed
+
+    private void tblProductTypeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductTypeMouseClicked
+        // TODO add your handling code here:
+        int selectedRow = tblProductType.getSelectedRow();
+    
+        if (selectedRow != -1) {
+            String selectedId = tblProductType.getValueAt(selectedRow, 0).toString();
+            List<Product> prs = productService.getProductByTypeProduct(selectedId);
+            updateProductTable(prs);
+        }
+    }//GEN-LAST:event_tblProductTypeMouseClicked
     private void updateProductTable(List<Product> products) {
-        String[] columnNames = {"Mã Sản Phẩm", "Số Serial", "Loại Sản Phẩm", "Nhà Sản Xuất", "Ngày Mua", "Ngày sản xuất", "Ngày hết hạn"};
+        String[] columnNames = {"Mã Sản Phẩm", "Số Serial", "Tên Sản Phẩm", "Loại Sản Phẩm", "Nhà Sản Xuất", "Ngày Mua", "Ngày sản xuất", "Ngày hết hạn"};
         DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
         tblProduct.setModel(tableModel);
 
@@ -284,6 +350,7 @@ public class pnlProduct extends javax.swing.JPanel {
             Object[] rowData = {
                 product.getProductId(),
                 product.getSerialNumber(),
+                product.getProductName(),
                 product.getProductType(),
                 product.getManufacturer(),
                 product.getPurchaseDate(),
@@ -301,8 +368,11 @@ public class pnlProduct extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> cbbField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tblProduct;
+    private javax.swing.JTable tblProductType;
     private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
 }

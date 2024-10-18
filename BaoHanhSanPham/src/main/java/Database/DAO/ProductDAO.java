@@ -6,9 +6,6 @@ import com.datastax.oss.driver.api.core.cql.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Date;
-import java.time.LocalDate;
-import java.time.ZoneId;
 
 public class ProductDAO {
     private final CqlSession session;
@@ -19,11 +16,12 @@ public class ProductDAO {
 
     // Thêm sản phẩm
     public void addProduct(Product product) {
-        String query = "INSERT INTO products (product_id, serial_number, product_type, manufacturer, purchase_date, warranty_start_date, warranty_end_date) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO products (product_id, serial_number, product_name, product_type, manufacturer, purchase_date, warranty_start_date, warranty_end_date) VALUES (?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement preparedStatement = session.prepare(query);
         BoundStatement boundStatement = preparedStatement.bind(
             product.getProductId(),
             product.getSerialNumber(),
+            product.getProductName(),
             product.getProductType(),
             product.getManufacturer(),
             product.getPurchaseDate(),         
@@ -35,10 +33,11 @@ public class ProductDAO {
 
     // Cập nhật sản phẩm
     public void updateProduct(Product product) {
-        String query = "UPDATE products SET serial_number = ?, product_type = ?, manufacturer = ?, purchase_date = ?, warranty_start_date = ?, warranty_end_date = ? WHERE product_id = ?";
+        String query = "UPDATE products SET serial_number = ?, product_name = ?,product_type = ?, manufacturer = ?, purchase_date = ?, warranty_start_date = ?, warranty_end_date = ? WHERE product_id = ?";
         PreparedStatement preparedStatement = session.prepare(query);
         BoundStatement boundStatement = preparedStatement.bind(
             product.getSerialNumber(),
+            product.getProductName(),
             product.getProductType(),
             product.getManufacturer(),
             product.getPurchaseDate(),          
@@ -66,6 +65,7 @@ public class ProductDAO {
             products.add(new Product(
                 row.getString("product_id"),
                 row.getString("serial_number"),
+                row.getString("product_name"),
                 row.getString("product_type"),
                 row.getString("manufacturer"),
                 row.getLocalDate("purchase_date"),          
@@ -87,9 +87,10 @@ public class ProductDAO {
             return new Product(
                 row.getString("product_id"),
                 row.getString("serial_number"),
+                row.getString("product_name"),
                 row.getString("product_type"),
                 row.getString("manufacturer"),
-                row.getLocalDate("purchase_date"),         
+                row.getLocalDate("purchase_date"),          
                 row.getLocalDate("warranty_start_date"),     
                 row.getLocalDate("warranty_end_date")        
             );
@@ -111,5 +112,24 @@ public class ProductDAO {
         }
 
         return productTypesAndNames;
+    public List<Product> getProductByTypeProduct(String typeProduct) {
+        List<Product> products = new ArrayList<>();
+        String query = "SELECT * FROM products WHERE product_type = ? ALLOW FILTERING";
+        PreparedStatement preparedStatement = session.prepare(query);
+        BoundStatement boundStatement = preparedStatement.bind(typeProduct);
+        ResultSet resultSet = session.execute(boundStatement);
+        for (Row row : resultSet) {
+            products.add(new Product(
+                row.getString("product_id"),
+                row.getString("serial_number"),
+                row.getString("product_name"),
+                row.getString("product_type"),
+                row.getString("manufacturer"),
+                row.getLocalDate("purchase_date"),          
+                row.getLocalDate("warranty_start_date"),     
+                row.getLocalDate("warranty_end_date")        
+            ));
+        }
+        return products;
     }
 }

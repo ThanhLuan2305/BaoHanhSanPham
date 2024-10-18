@@ -8,16 +8,19 @@ import java.time.LocalDate;
 
 public class Product {
     private String productId;
+    private String productName;
     private String serialNumber;
     private String productType;
     private String manufacturer;
-    private LocalDate purchaseDate; // Sử dụng LocalDate
-    private LocalDate warrantyStartDate; // Sử dụng LocalDate
+    private LocalDate purchaseDate;
+    private LocalDate warrantyStartDate; 
     private LocalDate warrantyEndDate;
 
     // Constructor
-    public Product(String productId, String serialNumber, String productType, String manufacturer, LocalDate purchaseDate, LocalDate warrantyStartDate, LocalDate warrantyEndDate) {
+
+    public Product(String productId, String productName, String serialNumber, String productType, String manufacturer, LocalDate purchaseDate, LocalDate warrantyStartDate, LocalDate warrantyEndDate) {
         this.productId = productId;
+        this.productName = productName;
         this.serialNumber = serialNumber;
         this.productType = productType;
         this.manufacturer = manufacturer;
@@ -25,6 +28,7 @@ public class Product {
         this.warrantyStartDate = warrantyStartDate;
         this.warrantyEndDate = warrantyEndDate;
     }
+    
 
     // Getter và Setter
     public String getProductId() {
@@ -83,7 +87,12 @@ public class Product {
         this.warrantyEndDate = warrantyEndDate;
     }
 
-    public Object getProductName() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public String getProductName() {
+        return productName;
     }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+    
 }
