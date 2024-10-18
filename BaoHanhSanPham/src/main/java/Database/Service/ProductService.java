@@ -74,5 +74,7 @@ public class ProductService {
         csvWriter.close();
         fileWriter.close();
     }
-    
+    public List<String[]>getProductTypesAndNames(){
+        return productDAO.getProductTypesAndNames();
+    }
 }

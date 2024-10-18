@@ -97,6 +97,21 @@ public class ProductDAO {
         }
         return null; 
     }
+    
+        // Hàm lấy tất cả productType và productName từ bảng products
+    public List<String[]> getProductTypesAndNames() {
+        List<String[]> productTypesAndNames = new ArrayList<>();
+
+        String query = "SELECT product_type, product_name FROM products";  // Truy vấn chỉ lấy 2 cột product_type và product_name
+        ResultSet resultSet = session.execute(query);
+
+        for (Row row : resultSet) {
+            String productType = row.getString("product_type");
+            String productName = row.getString("product_name");
+            productTypesAndNames.add(new String[] { productType, productName });
+        }
+
+        return productTypesAndNames;
     public List<Product> getProductByTypeProduct(String typeProduct) {
         List<Product> products = new ArrayList<>();
         String query = "SELECT * FROM products WHERE product_type = ? ALLOW FILTERING";

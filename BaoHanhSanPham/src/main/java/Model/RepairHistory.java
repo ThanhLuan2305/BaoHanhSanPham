@@ -11,14 +11,16 @@ public class RepairHistory {
     private String productId;
     private LocalDate repairDate;
     private String repairDescription;
+    private String status;
     private String technician;
 
     // Constructor
-    public RepairHistory(String repairId, String productId, LocalDate repairDate, String repairDescription, String technician) {
+    public RepairHistory(String repairId, String productId, LocalDate repairDate, String repairDescription, String status, String technician) {
         this.repairId = repairId;
         this.productId = productId;
         this.repairDate = repairDate;
         this.repairDescription = repairDescription;
+        this.status = status;
         this.technician = technician;
     }
 
@@ -53,6 +55,14 @@ public class RepairHistory {
 
     public void setRepairDescription(String repairDescription) {
         this.repairDescription = repairDescription;
+    }
+    
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;      // Setter cho status
     }
 
     public String getTechnician() {
