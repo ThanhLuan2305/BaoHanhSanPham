@@ -75,9 +75,7 @@ public class pnlExtendedWarranty extends javax.swing.JPanel {
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
 
-        setBackground(new java.awt.Color(204, 0, 0));
-
-        tblGiaHanBaoHanh.setBackground(new java.awt.Color(255, 204, 204));
+        tblGiaHanBaoHanh.setBackground(new java.awt.Color(242, 242, 242));
         tblGiaHanBaoHanh.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -91,7 +89,6 @@ public class pnlExtendedWarranty extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(tblGiaHanBaoHanh);
 
-        jPanel1.setBackground(new java.awt.Color(255, 204, 204));
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -131,8 +128,6 @@ public class pnlExtendedWarranty extends javax.swing.JPanel {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        jPanel2.setBackground(new java.awt.Color(255, 204, 204));
-
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setText("THÔNG TIN");
 
@@ -144,7 +139,7 @@ public class pnlExtendedWarranty extends javax.swing.JPanel {
 
         jLabel5.setText("Ngày kết thúc : ");
 
-        btnThemBH.setBackground(new java.awt.Color(255, 153, 0));
+        btnThemBH.setBackground(new java.awt.Color(242, 242, 242));
         btnThemBH.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnThemBH.setText("THÊM");
         btnThemBH.addActionListener(new java.awt.event.ActionListener() {
@@ -153,7 +148,7 @@ public class pnlExtendedWarranty extends javax.swing.JPanel {
             }
         });
 
-        btnLoadBH.setBackground(new java.awt.Color(255, 153, 0));
+        btnLoadBH.setBackground(new java.awt.Color(242, 242, 242));
         btnLoadBH.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnLoadBH.setText("LOAD");
         btnLoadBH.addActionListener(new java.awt.event.ActionListener() {
@@ -162,7 +157,7 @@ public class pnlExtendedWarranty extends javax.swing.JPanel {
             }
         });
 
-        btnThemUpdate.setBackground(new java.awt.Color(255, 153, 0));
+        btnThemUpdate.setBackground(new java.awt.Color(242, 242, 242));
         btnThemUpdate.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnThemUpdate.setText("UPDATE");
         btnThemUpdate.addActionListener(new java.awt.event.ActionListener() {
@@ -171,7 +166,7 @@ public class pnlExtendedWarranty extends javax.swing.JPanel {
             }
         });
 
-        btnXoaBH.setBackground(new java.awt.Color(255, 153, 0));
+        btnXoaBH.setBackground(new java.awt.Color(242, 242, 242));
         btnXoaBH.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnXoaBH.setText("XÓA");
         btnXoaBH.addActionListener(new java.awt.event.ActionListener() {
@@ -180,7 +175,7 @@ public class pnlExtendedWarranty extends javax.swing.JPanel {
             }
         });
 
-        btnXuatFile.setBackground(new java.awt.Color(255, 153, 0));
+        btnXuatFile.setBackground(new java.awt.Color(242, 242, 242));
         btnXuatFile.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnXuatFile.setText("Xuất file");
         btnXuatFile.addActionListener(new java.awt.event.ActionListener() {
@@ -251,16 +246,15 @@ public class pnlExtendedWarranty extends javax.swing.JPanel {
                     .addComponent(jLabel5)
                     .addComponent(txtNgayketthuc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnThemBH)
-                    .addComponent(btnLoadBH, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnThemUpdate)
-                    .addComponent(btnXoaBH)
-                    .addComponent(btnXuatFile, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnXuatFile, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnThemBH)
+                        .addComponent(btnLoadBH, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnThemUpdate)
+                        .addComponent(btnXoaBH)))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
-
-        jPanel3.setBackground(new java.awt.Color(255, 204, 204));
 
         jLabel1.setBackground(new java.awt.Color(255, 204, 204));
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
