@@ -26,24 +26,26 @@ import java.io.File;
  * @author LENOVO
  */
 public class pnlCustomer extends javax.swing.JPanel {
+
     /**
      * Creates new form pnlCustomer
      */
     private DefaultTableModel tableModel;
     private CustomerService customerService;
     CqlSession cqlSession = createSession();
-    
+
     public pnlCustomer() {
         initComponents();
         customerService = new CustomerService(cqlSession);
         loadAllCustomers();
     }
+
     private void loadAllCustomers() {
         List<Customer> products = customerService.getAll();
         String[] columnNames = {"Customer ID", "Name", "Address", "Phone Number"};
         tableModel = new DefaultTableModel(columnNames, 0);
-        tblCustomer.setModel(tableModel);
-        tableModel.setRowCount(0); 
+        tblCustomers.setModel(tableModel);
+        tableModel.setRowCount(0);
         for (Customer customer : products) {
             Object[] rowData = {
                 customer.customer_id,
@@ -82,6 +84,9 @@ public class pnlCustomer extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         btnexportJson = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        tblCustomers = new javax.swing.JTable();
 
         tblCustomer.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -146,94 +151,114 @@ public class pnlCustomer extends javax.swing.JPanel {
             }
         });
 
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel5.setText("KHÁCH HÀNG ");
+
+        tblCustomers.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tblCustomers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblCustomersMouseClicked(evt);
+            }
+        });
+        jScrollPane6.setViewportView(tblCustomers);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel5)
+                .addGap(284, 284, 284))
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(50, 50, 50)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane4)
-                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                        .addComponent(btnaddCustomer)
+                        .addGap(45, 45, 45)
+                        .addComponent(btndeleteCustomer)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnupdateCustomer)
+                        .addGap(61, 61, 61)
+                        .addComponent(btnexportJson))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 119, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(33, 33, 33)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(52, 52, 52)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
-                            .addComponent(jLabel2)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnexportJson)
-                        .addGap(47, 47, 47)))
-                .addGap(40, 40, 40))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(133, 133, 133)
-                .addComponent(btnaddCustomer)
-                .addGap(18, 18, 18)
-                .addComponent(btndeleteCustomer)
-                .addGap(57, 57, 57)
-                .addComponent(btnupdateCustomer)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane6))
+                .addContainerGap(121, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
+                .addContainerGap()
+                .addComponent(jLabel5)
+                .addGap(27, 27, 27)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(43, 43, 43)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3))
-                        .addGap(26, 26, 26)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))
-                        .addGap(26, 26, 26)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel2))
-                .addGap(41, 41, 41)
+                    .addComponent(jLabel4)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(42, 42, 42)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btndeleteCustomer)
                     .addComponent(btnaddCustomer)
+                    .addComponent(btndeleteCustomer)
                     .addComponent(btnupdateCustomer)
                     .addComponent(btnexportJson))
-                .addContainerGap(60, Short.MAX_VALUE))
+                .addGap(44, 44, 44)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(196, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btndeleteCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btndeleteCustomerActionPerformed
         // Lấy chỉ số của hàng đã chọn
-    int selectedRow = tblCustomer.getSelectedRow();
-    if (selectedRow != -1) {
-        // Lấy ID của khách hàng từ hàng đã chọn
-        String customerID = tblCustomer.getValueAt(selectedRow, 0).toString();
-        int confirm = javax.swing.JOptionPane.showConfirmDialog(this,"Bạn có muốn xóa khách hàng này không ?", "Xác nhận xóa khách hàng", javax.swing.JOptionPane.YES_NO_OPTION);
-        // Xóa khách hàng
-        
-        if(confirm == javax.swing.JOptionPane.YES_OPTION)
-        {   
-        customerService.deleteCustomer(customerID);
-        // Tải lại danh sách khách hàng
-        loadAllCustomers();
+        int selectedRow = tblCustomers.getSelectedRow();
+        if (selectedRow != -1) {
+            // Lấy ID của khách hàng từ hàng đã chọn
+            String customerID = tblCustomers.getValueAt(selectedRow, 0).toString();
+            int confirm = javax.swing.JOptionPane.showConfirmDialog(this, "Bạn có muốn xóa khách hàng này không ?", "Xác nhận xóa khách hàng", javax.swing.JOptionPane.YES_NO_OPTION);
+            // Xóa khách hàng
+
+            if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+                customerService.deleteCustomer(customerID);
+                // Tải lại danh sách khách hàng
+                loadAllCustomers();
+            }
+        } else {
+            // Hiển thị thông báo nếu không có hàng nào được chọn
+            javax.swing.JOptionPane.showMessageDialog(this, "Vui lòng chọn một khách hàng để xóa.");
         }
-    } else {
-        // Hiển thị thông báo nếu không có hàng nào được chọn
-        javax.swing.JOptionPane.showMessageDialog(this, "Vui lòng chọn một khách hàng để xóa.");
-    }
     }//GEN-LAST:event_btndeleteCustomerActionPerformed
 
     private void btnaddCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaddCustomerActionPerformed
@@ -248,28 +273,28 @@ public class pnlCustomer extends javax.swing.JPanel {
     }//GEN-LAST:event_btnaddCustomerActionPerformed
 
     private void btnupdateCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnupdateCustomerActionPerformed
-       // Kiểm tra xem người dùng đã chọn hàng nào trong bảng chưa
-    int selectedRow = tblCustomer.getSelectedRow();
-    if (selectedRow != -1) { // Nếu có hàng được chọn
-        // Lấy thông tin khách hàng từ hàng đã chọn
-        String customerID = tblCustomer.getValueAt(selectedRow, 0).toString();
-        String name = txtNameCustomer.getText();
-        String address = txtAddressCustomer.getText();
-        String phone_number = textPhoneCustomer.getText();
-        
-        // Tạo đối tượng Customer mới với thông tin đã chỉnh sửa
-        Customer customer = new Customer(customerID, name, address, phone_number);
-        
-        // Gọi phương thức cập nhật khách hàng từ CustomerService
-        customerService.updateCustomer(customer);
-        
-        // Tải lại danh sách khách hàng
-        loadAllCustomers();
-    } else {
-        // Nếu không có hàng nào được chọn, hiển thị thông báo
-        javax.swing.JOptionPane.showMessageDialog(this, 
-            "Vui lòng chọn một khách hàng để sửa.");
-    }
+        // Kiểm tra xem người dùng đã chọn hàng nào trong bảng chưa
+        int selectedRow = tblCustomers.getSelectedRow();
+        if (selectedRow != -1) { // Nếu có hàng được chọn
+            // Lấy thông tin khách hàng từ hàng đã chọn
+            String customerID = tblCustomers.getValueAt(selectedRow, 0).toString();
+            String name = txtNameCustomer.getText();
+            String address = txtAddressCustomer.getText();
+            String phone_number = textPhoneCustomer.getText();
+
+            // Tạo đối tượng Customer mới với thông tin đã chỉnh sửa
+            Customer customer = new Customer(customerID, name, address, phone_number);
+
+            // Gọi phương thức cập nhật khách hàng từ CustomerService
+            customerService.updateCustomer(customer);
+
+            // Tải lại danh sách khách hàng
+            loadAllCustomers();
+        } else {
+            // Nếu không có hàng nào được chọn, hiển thị thông báo
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Vui lòng chọn một khách hàng để sửa.");
+        }
     }//GEN-LAST:event_btnupdateCustomerActionPerformed
 
     private void tblCustomerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCustomerMouseClicked
@@ -284,7 +309,7 @@ public class pnlCustomer extends javax.swing.JPanel {
     }//GEN-LAST:event_tblCustomerMouseClicked
 
     private void btnexportJsonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnexportJsonActionPerformed
-         // Tạo một JFileChooser để người dùng chọn đường dẫn lưu file
+        // Tạo một JFileChooser để người dùng chọn đường dẫn lưu file
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Lưu file JSON");
         FileNameExtensionFilter filter = new FileNameExtensionFilter("JSON Files", "json");
@@ -312,6 +337,17 @@ public class pnlCustomer extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnexportJsonActionPerformed
 
+    private void tblCustomersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCustomersMouseClicked
+        int selectedRow = tblCustomers.getSelectedRow();
+        if (selectedRow != -1) {
+            // Lấy thông tin khách hàng đã chọn
+            txtIDCustomer.setText(tblCustomers.getValueAt(selectedRow, 0).toString());
+            txtNameCustomer.setText(tblCustomers.getValueAt(selectedRow, 1).toString());
+            txtAddressCustomer.setText(tblCustomers.getValueAt(selectedRow, 2).toString());
+            textPhoneCustomer.setText(tblCustomers.getValueAt(selectedRow, 3).toString());
+        }
+    }//GEN-LAST:event_tblCustomersMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnaddCustomer;
@@ -322,12 +358,15 @@ public class pnlCustomer extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JTable tblCustomer;
+    private javax.swing.JTable tblCustomers;
     private javax.swing.JTextPane textPhoneCustomer;
     private javax.swing.JTextPane txtAddressCustomer;
     private javax.swing.JTextPane txtIDCustomer;

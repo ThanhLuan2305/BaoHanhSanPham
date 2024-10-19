@@ -9,6 +9,7 @@ package Model;
  * @author LENOVO
  */
 public class Customer {
+
     public String customer_id;
     public String name;
     public String address;
@@ -23,7 +24,8 @@ public class Customer {
         this.address = address;
         this.phone_number = phone_number;
     }
-    public String getCustomerId() {
+
+     public String getCustomerId() {
         return customer_id;
     }
 
