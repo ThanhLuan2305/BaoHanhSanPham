@@ -50,8 +50,8 @@ public class MainForm extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("QLSP");
 
-        pnlParent.setBackground(new java.awt.Color(204, 0, 0));
-        pnlParent.setForeground(new java.awt.Color(255, 51, 51));
+        pnlParent.setBackground(new java.awt.Color(255, 255, 255));
+        pnlParent.setForeground(new java.awt.Color(255, 255, 255));
         pnlParent.setVerifyInputWhenFocusTarget(false);
         pnlParent.setLayout(new java.awt.CardLayout());
 

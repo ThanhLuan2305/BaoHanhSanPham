@@ -81,7 +81,6 @@ public class LoginForm extends javax.swing.JFrame {
 
         jLabel3.setText("Mật khẩu");
 
-        txtPassword.setText("jPasswordField1");
         txtPassword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtPasswordActionPerformed(evt);
