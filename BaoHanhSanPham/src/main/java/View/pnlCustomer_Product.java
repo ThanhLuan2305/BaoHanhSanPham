@@ -5,12 +5,19 @@
 package View;
 
 import static Database.ConnectCassandra.createSession;
+import Database.DAO.ProductDAO;
 import Database.Service.Customer_ProductService;
 import Model.Customer;
 import com.datastax.oss.driver.api.core.CqlSession;
-import  Model.Customer_Product;
+import Model.Customer_Product;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import Database.Service.CustomerService;
+import Database.Service.ProductService;
+import Model.Product;
+import Model.WarrantyPolicy;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
@@ -18,27 +25,74 @@ import javax.swing.table.DefaultTableModel;
  */
 public class pnlCustomer_Product extends javax.swing.JPanel {
 
-    
     private DefaultTableModel tableModel;
     private Customer_ProductService customer_ProductService;
+    private CustomerService customerService;
+    private ProductService productService;
+
     CqlSession cqlSession = createSession();
-    
+
     public pnlCustomer_Product() {
-        initComponents();
-         customer_ProductService = new Customer_ProductService(cqlSession);
-        loadAllCustomers();
-        
+        initComponents(); // Khởi tạo giao diện trước
+
+        // Khởi tạo các service cần thiết
+        customer_ProductService = new Customer_ProductService(cqlSession);
+        customerService = new CustomerService(cqlSession);
+        productService = new ProductService(cqlSession);
+
+        // Nạp dữ liệu sản phẩm và khách hàng vào bảng (table)
+        loadAllCustomer_Product();
+        loadAllCustomer();
+        loadAllProducts();
+        // Nạp dữ liệu vào ComboBox
+        loadCustomerIdsIntoComboBox();
+//        loadProductIdsIntoComboBox();
     }
-    private void loadAllCustomers() {
+
+    private void loadAllCustomer_Product() {
         List<Customer_Product> products = customer_ProductService.getAll();
-        String[] columnNames = {"Customer ID", "Product ID"};
+        String[] columnNames = {"ID khách hàng", "ID sản phẩm"};
         tableModel = new DefaultTableModel(columnNames, 0);
-        tblCustomer_Products.setModel(tableModel);
-        tableModel.setRowCount(0); 
+        tblProducts.setModel(tableModel);
+        tableModel.setRowCount(0);
         for (Customer_Product customer : products) {
             Object[] rowData = {
                 customer.customer_id,
-                customer.product_id,
+                customer.product_id,};
+            tableModel.addRow(rowData);
+        }
+    }
+
+//    Load du lieu vao bang san pham
+    private void loadAllProducts() {
+        List<Product> products = productService.getAllProducts();
+        String[] columnNames = {"ID", "Tên sản phẩm", "Ngày mua"};
+        tableModel = new DefaultTableModel(columnNames, 0);
+        tblProduc_Info.setModel(tableModel);
+        tableModel.setRowCount(0);
+        for (Product product : products) {
+            Object[] rowData = {
+                product.getProductId(),
+                product.getManufacturer(),
+                product.getProductName()
+            };
+            tableModel.addRow(rowData);
+        }
+    }
+
+    //Load dữ liệu vào bảng khách hàng
+    private void loadAllCustomer() {
+        List<Customer> customers = customerService.getAll();
+        String[] columnNames = {"ID", "Họ tên", "Địa chỉ", "Số điện thoại"};
+        tableModel = new DefaultTableModel(columnNames, 0);
+        tblKhachHang.setModel(tableModel);
+        tableModel.setRowCount(0);
+        for (Customer customer : customers) {
+            Object[] rowData = {
+                customer.customer_id,
+                customer.name,
+                customer.address,
+                customer.phone_number
             };
             tableModel.addRow(rowData);
         }
@@ -56,20 +110,36 @@ public class pnlCustomer_Product extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextPane1 = new javax.swing.JTextPane();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblCustomer_Products = new javax.swing.JTable();
+        tblProducts = new javax.swing.JTable();
         jScrollPane3 = new javax.swing.JScrollPane();
         txtCustomerID = new javax.swing.JTextPane();
         jScrollPane5 = new javax.swing.JScrollPane();
         txtProductID = new javax.swing.JTextPane();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        btnAddCustomerPR = new javax.swing.JButton();
-        btnDeleteCustomerPr = new javax.swing.JButton();
-        btnUpadteCustomerPr = new javax.swing.JButton();
+        SA = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        txtNameProduct = new javax.swing.JTextPane();
+        jLabel4 = new javax.swing.JLabel();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        txtDatePurchase = new javax.swing.JTextPane();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        tblKhachHang = new javax.swing.JTable();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        tblProduc_Info = new javax.swing.JTable();
+        jLabel7 = new javax.swing.JLabel();
+        cbbCustomer = new javax.swing.JComboBox<>();
+        jPanel1 = new javax.swing.JPanel();
+        btnUpdateInfo = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
 
         jScrollPane2.setViewportView(jTextPane1);
 
-        tblCustomer_Products.setModel(new javax.swing.table.DefaultTableModel(
+        tblProducts.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -80,166 +150,376 @@ public class pnlCustomer_Product extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        tblCustomer_Products.addMouseListener(new java.awt.event.MouseAdapter() {
+        tblProducts.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblCustomer_ProductsMouseClicked(evt);
+                tblProductsMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tblCustomer_Products);
+        jScrollPane1.setViewportView(tblProducts);
 
-        txtCustomerID.setEnabled(false);
         jScrollPane3.setViewportView(txtCustomerID);
 
         txtProductID.setEnabled(false);
         jScrollPane5.setViewportView(txtProductID);
 
-        jLabel1.setText("Mã khách hàng ");
+        jLabel1.setText("Tên khách hàng ");
 
         jLabel3.setText("Mã sản phẩm");
 
-        btnAddCustomerPR.setText("Thêm khách hàng ");
-        btnAddCustomerPR.addActionListener(new java.awt.event.ActionListener() {
+        SA.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        SA.setText("SẢN PHẨM VÀ KHÁCH HÀNG ");
+
+        jLabel2.setText("Tên sản phẩm");
+
+        jScrollPane4.setViewportView(txtNameProduct);
+
+        jLabel4.setText("Ngày mua");
+
+        jScrollPane6.setViewportView(txtDatePurchase);
+
+        tblKhachHang.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane7.setViewportView(tblKhachHang);
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel5.setText("Bảng khách hàng ");
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel6.setText("Bảng sản phẩm");
+
+        tblProduc_Info.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane8.setViewportView(tblProduc_Info);
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel7.setText("Bảng thông tin khách hàng và sản phẩm ");
+
+        cbbCustomer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddCustomerPRActionPerformed(evt);
+                cbbCustomerActionPerformed(evt);
             }
         });
 
-        btnDeleteCustomerPr.setText("Xóa khách hàng");
-        btnDeleteCustomerPr.addActionListener(new java.awt.event.ActionListener() {
+        btnUpdateInfo.setText("Cập nhật ");
+        btnUpdateInfo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDeleteCustomerPrActionPerformed(evt);
+                btnUpdateInfoActionPerformed(evt);
             }
         });
 
-        btnUpadteCustomerPr.setText("Cập nhật ");
-        btnUpadteCustomerPr.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnUpadteCustomerPrActionPerformed(evt);
-            }
-        });
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(239, 239, 239)
+                .addComponent(btnUpdateInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(btnUpdateInfo, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jLabel8.setText("Tìm kiếm ");
+
+        jLabel10.setText("Mã khách hàng");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(0, 22, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(45, 45, 45)
-                        .addComponent(jLabel3))
+                        .addGap(229, 229, 229)
+                        .addComponent(SA))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 660, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(17, 17, 17)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel8)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnAddCustomerPR)
-                                .addGap(141, 141, 141)
-                                .addComponent(btnDeleteCustomerPr)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnUpadteCustomerPr)))))
-                .addGap(0, 126, Short.MAX_VALUE))
+                                .addComponent(jLabel10)
+                                .addGap(18, 18, 18)
+                                .addComponent(cbbCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel4))
+                                .addGap(26, 26, 26)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jScrollPane5)
+                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jScrollPane4)
+                                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(52, 52, 52)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(96, 96, 96)
+                                        .addComponent(jLabel6)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addGap(0, 0, Short.MAX_VALUE)
+                                        .addComponent(jLabel5)
+                                        .addGap(112, 112, 112))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addGap(49, 49, 49)))))
+                .addContainerGap(984, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(SA)
+                .addGap(27, 27, 27)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(22, 22, 22)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(20, 20, 20)
+                                .addComponent(jLabel4))
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(cbbCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel3)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 158, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnUpadteCustomerPr)
-                    .addComponent(btnDeleteCustomerPr)
-                    .addComponent(btnAddCustomerPR))
-                .addContainerGap(59, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel6))
+                        .addGap(10, 10, 10)
+                        .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(112, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnAddCustomerPRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCustomerPRActionPerformed
-         // TODO add your handling code here:
-        String customerID = txtCustomerID.getText();
-        String productID = txtProductID.getText();
-        Customer_Product customer_Product = new Customer_Product(customerID, productID);
-        customer_ProductService.addCustomer_Product(customer_Product);
-        loadAllCustomers();
-    }//GEN-LAST:event_btnAddCustomerPRActionPerformed
+    private void tblProductsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductsMouseClicked
+        int selectedRow = tblProducts.getSelectedRow();
 
-    private void btnDeleteCustomerPrActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteCustomerPrActionPerformed
-       int selectedRow = tblCustomer_Products.getSelectedRow();
-    if (selectedRow != -1) {
-        // Lấy ID của khách hàng từ hàng đã chọn
-        String customerID = tblCustomer_Products.getValueAt(selectedRow, 0).toString();
-        int confirm = javax.swing.JOptionPane.showConfirmDialog(this,"Bạn có muốn xóa khách hàng này không ?", "Xác nhận xóa khách hàng", javax.swing.JOptionPane.YES_NO_OPTION);
-        // Xóa khách hàng
-        
-        if(confirm == javax.swing.JOptionPane.YES_OPTION)
-        {   
-        customer_ProductService.deleteCustomer_Product(customerID);
-        // Tải lại danh sách khách hàng
-        loadAllCustomers();
-        }
-    } else {
-        // Hiển thị thông báo nếu không có hàng nào được chọn
-        javax.swing.JOptionPane.showMessageDialog(this, "Vui lòng chọn một khách hàng để xóa.");
-    }
-    }//GEN-LAST:event_btnDeleteCustomerPrActionPerformed
-
-    private void btnUpadteCustomerPrActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpadteCustomerPrActionPerformed
-          // Kiểm tra xem người dùng đã chọn hàng nào trong bảng chưa
-    int selectedRow = tblCustomer_Products.getSelectedRow();
-    if (selectedRow != -1) { // Nếu có hàng được chọn
-        // Lấy thông tin khách hàng từ hàng đã chọn
-        String customerID = tblCustomer_Products.getValueAt(selectedRow, 0).toString();
-        String productID = txtProductID.getText();
-        
-        // Tạo đối tượng Customer mới với thông tin đã chỉnh sửa
-        Customer_Product customer_Product = new Customer_Product(customerID, productID);
-        
-        // Gọi phương thức cập nhật khách hàng từ CustomerService
-        customer_ProductService.updateCustomer_Product(customer_Product);
-        
-        // Tải lại danh sách khách hàng
-        loadAllCustomers();
-    } else {
-        // Nếu không có hàng nào được chọn, hiển thị thông báo
-        javax.swing.JOptionPane.showMessageDialog(this, 
-            "Vui lòng chọn một khách hàng để sửa.");
-    }
-    }//GEN-LAST:event_btnUpadteCustomerPrActionPerformed
-
-    private void tblCustomer_ProductsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCustomer_ProductsMouseClicked
-        int selectedRow = tblCustomer_Products.getSelectedRow();
         if (selectedRow != -1) {
+            String customerID;
+            String productID;
+            customerID = tblProducts.getValueAt(selectedRow, 0).toString();
+            productID = tblProducts.getValueAt(selectedRow, 1).toString();
             // Lấy thông tin khách hàng đã chọn
-            txtCustomerID.setText(tblCustomer_Products.getValueAt(selectedRow, 0).toString());
-            txtProductID.setText(tblCustomer_Products.getValueAt(selectedRow, 1).toString());
-        }   
-    }//GEN-LAST:event_tblCustomer_ProductsMouseClicked
+            txtCustomerID.setText(tblProducts.getValueAt(selectedRow, 0).toString());
+            txtProductID.setText(tblProducts.getValueAt(selectedRow, 1).toString());
+            txtDatePurchase.setText(customerID);
+            txtNameProduct.setText(productID);
 
+            List<Product> products = productService.getProductByID(productID);
+            String[] columnNames = {"ID", "Tên sản phẩm", "Ngày mua"};
+            tableModel = new DefaultTableModel(columnNames, 0);
+            tblProduc_Info.setModel(tableModel);
+            tableModel.setRowCount(0);
+            for (Product product : products) {
+                Object[] rowData = {
+                    product.getProductId(),
+                    product.getManufacturer(),
+                    product.getProductName(),
+                    product.getPurchaseDate()
+                };
+                txtNameProduct.setText(product.getManufacturer());
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                String formattedDate = product.getPurchaseDate().format(formatter);
+                txtDatePurchase.setText(formattedDate);  // Sử dụng ngày đã định dạng
+                tableModel.addRow(rowData);
+            }
+
+            Customer customer = customerService.getCustomerById(customerID);
+            String[] columnNameCustomer = {"ID", "Họ tên", "Địa chỉ", "Số điện thoại"};
+            tableModel = new DefaultTableModel(columnNameCustomer, 0);
+            tblKhachHang.setModel(tableModel);
+            tableModel.setRowCount(0);
+
+// Không cần vòng lặp ở đây vì chỉ có một khách hàng
+            Object[] rowData = {
+                customer.customer_id,
+                customer.name,
+                customer.address,
+                customer.phone_number
+            };
+            tableModel.addRow(rowData);
+            txtCustomerID.setText(customer.name);
+        }
+
+    }//GEN-LAST:event_tblProductsMouseClicked
+
+    private void cbbCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbCustomerActionPerformed
+        String selectedItem = (String) cbbCustomer.getSelectedItem();
+//        String testProduct = "C001";
+        System.out.println("Lựa chọn của bạn là: " + selectedItem);
+        {
+            if (selectedItem.isEmpty()) {
+                System.out.println("Không có item nào được chọn");
+            } else {
+                List<Product> products = productService.getProductByIDCustomer(selectedItem);
+                String[] columnNames = {"ID", "Tên sản phẩm", "Ngày mua"};
+                tableModel = new DefaultTableModel(columnNames, 0);
+                tblProduc_Info.setModel(tableModel);
+                tableModel.setRowCount(0);
+                for (Product product : products) {
+                    Object[] rowData = {
+                        product.getProductId(),
+                        product.getManufacturer(),
+                        product.getProductName()
+                    };
+                    tableModel.addRow(rowData);
+                }
+            }
+        }
+    }//GEN-LAST:event_cbbCustomerActionPerformed
+
+    private void btnUpdateInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateInfoActionPerformed
+        int selectedRow = tblProducts.getSelectedRow();
+
+        if (selectedRow != -1) {
+
+            String customerID = tblProducts.getValueAt(selectedRow, 0).toString();
+
+            String newCustomerName = txtCustomerID.getText();
+
+            if (!newCustomerName.isEmpty()) {
+
+                Customer existingCustomer = customerService.getCustomerById(customerID);
+
+                if (existingCustomer != null) {
+                    existingCustomer.name = newCustomerName;
+
+                    customerService.updateCustomer(existingCustomer);
+
+                    int customerRowIndex = tblKhachHang.getSelectedRow();
+                    if (customerRowIndex != -1) {
+                        tblKhachHang.setValueAt(newCustomerName, customerRowIndex, 1);
+                    }
+
+                    loadAllCustomer();
+
+                    javax.swing.JOptionPane.showMessageDialog(this, "Cập nhật tên khách hàng thành công!");
+                } else {
+
+                    javax.swing.JOptionPane.showMessageDialog(this, "Không tìm thấy khách hàng để cập nhật.");
+                }
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "Tên khách hàng không được để trống.");
+            }
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Vui lòng chọn một khách hàng để cập nhật.");
+        }
+    }//GEN-LAST:event_btnUpdateInfoActionPerformed
+
+    // Load danh sách customer_id vào ComboBox
+    private void loadCustomerIdsIntoComboBox() {
+        List<String> customerIds = customerService.getAllCustomerIDs();
+
+        if (customerIds.isEmpty()) {
+            System.out.println("Không có ID khách hàng nào để load.");
+        } else {
+            for (String id : customerIds) {
+                System.out.println("Thêm ID khách hàng: " + id); // In ra để kiểm tra ID
+                cbbCustomer.addItem(id);
+            }
+        }
+    }
+
+//    private void loadProductIdsIntoComboBox() {
+//        List<String> productIDs = productService.getAllProductListID();
+//
+//        if (productIDs.isEmpty()) {
+//            System.out.println("Không có ID khách hàng nào để load.");
+//        } else {
+//            for (String id : productIDs) {
+//                System.out.println("Thêm ID khách hàng: " + id); // In ra để kiểm tra ID
+//                cbbProduct.addItem(id);
+//            }
+//        }
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAddCustomerPR;
-    private javax.swing.JButton btnDeleteCustomerPr;
-    private javax.swing.JButton btnUpadteCustomerPr;
+    private javax.swing.JLabel SA;
+    private javax.swing.JButton btnUpdateInfo;
+    private javax.swing.JComboBox<String> cbbCustomer;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JTextPane jTextPane1;
-    private javax.swing.JTable tblCustomer_Products;
+    private javax.swing.JTable tblKhachHang;
+    private javax.swing.JTable tblProduc_Info;
+    private javax.swing.JTable tblProducts;
     private javax.swing.JTextPane txtCustomerID;
+    private javax.swing.JTextPane txtDatePurchase;
+    private javax.swing.JTextPane txtNameProduct;
     private javax.swing.JTextPane txtProductID;
     // End of variables declaration//GEN-END:variables
 }
