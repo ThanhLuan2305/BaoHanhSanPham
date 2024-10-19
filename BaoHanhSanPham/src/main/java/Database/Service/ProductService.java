@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class ProductService {
+
     private final ProductDAO productDAO;
 
     public ProductService(CqlSession session) {
@@ -44,6 +45,7 @@ public class ProductService {
     public Product getProductBySerialNumber(String serialNumber) {
         return productDAO.getProductBySerialNumber(serialNumber);
     }
+
     public List<Product> getProductByTypeProduct(String typeProduct) {
         return productDAO.getProductByTypeProduct(typeProduct);
     }
@@ -56,7 +58,7 @@ public class ProductService {
         String[] header = {"Mã Sản Phẩm", "Số Serial", "Tên Sản Phẩm", "Loại Sản Phẩm", "Nhà Sản Xuất", "Ngày Mua", "Ngày sản xuất", "Ngày hết hạn"};
         csvWriter.writeNext(header);
 
-        List<Product> products = getAllProducts(); 
+        List<Product> products = getAllProducts();
         for (Product product : products) {
             String[] productData = {
                 product.getProductId(),
@@ -74,7 +76,22 @@ public class ProductService {
         csvWriter.close();
         fileWriter.close();
     }
-    public List<String[]>getProductTypesAndNames(){
+
+    public List<String[]> getProductTypesAndNames() {
         return productDAO.getProductTypesAndNames();
     }
+
+    public List<String> getAllProductListID() {
+        return productDAO.getAllProducListID();
+    }
+
+    public List<Product> getProductByIDCustomer(String customer_ID) {
+        return productDAO.getProductByIDCustomer(customer_ID);
+    }
+    
+    public List<Product> getProductByID(String product_ID){
+        return productDAO.getProductByID(product_ID);
+    }
+    
+
 }

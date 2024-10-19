@@ -38,7 +38,6 @@ Database\DAO\RepairHistoryDAO.class
 View\MainForm$5.class
 View\pnlExtendedWarranty$6.class
 Database\DAO\CustomerDAO.class
-View\pnlCustomer_Product$4.class
 Model\Customer_Product.class
 View\LoginForm.class
 View\pnlRepairHistory$7.class
@@ -70,6 +69,7 @@ View\pnlDashboard.class
 Database\Service\TypeProductService.class
 Model\RepairHistory.class
 Main\Main.class
+View\pnlCustomer$6.class
 View\pnlWarrantyPolicy$6.class
 View\pnlRepairHistory$3.class
 View\pnlWarrantyClaim.class
