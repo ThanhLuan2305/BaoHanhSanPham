@@ -136,13 +136,11 @@ public class pnlRepairHistory extends javax.swing.JPanel {
         jMenu4.setText("Edit");
         jMenuBar2.add(jMenu4);
 
-        jPanel1.setBackground(new java.awt.Color(204, 0, 0));
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jPanel2.setBackground(new java.awt.Color(255, 204, 204));
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        tblRepairHistory.setBackground(new java.awt.Color(255, 204, 204));
+        tblRepairHistory.setBackground(new java.awt.Color(242, 242, 242));
         tblRepairHistory.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -173,7 +171,6 @@ public class pnlRepairHistory extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel3.setBackground(new java.awt.Color(255, 204, 204));
         jPanel3.setForeground(new java.awt.Color(51, 255, 51));
 
         jLabel1.setBackground(new java.awt.Color(204, 255, 204));
@@ -196,7 +193,6 @@ public class pnlRepairHistory extends javax.swing.JPanel {
                 .addComponent(jLabel1))
         );
 
-        jPanel4.setBackground(new java.awt.Color(255, 204, 204));
         jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jLabel2.setText("Mã sản phẩm :");
@@ -212,7 +208,7 @@ public class pnlRepairHistory extends javax.swing.JPanel {
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel7.setText("THAY ĐỔI LỊCH");
 
-        btnSuaLich.setBackground(new java.awt.Color(255, 153, 0));
+        btnSuaLich.setBackground(new java.awt.Color(242, 242, 242));
         btnSuaLich.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnSuaLich.setText("Sửa lịch");
         btnSuaLich.addActionListener(new java.awt.event.ActionListener() {
@@ -221,7 +217,7 @@ public class pnlRepairHistory extends javax.swing.JPanel {
             }
         });
 
-        btnThemLich.setBackground(new java.awt.Color(255, 153, 0));
+        btnThemLich.setBackground(new java.awt.Color(242, 242, 242));
         btnThemLich.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnThemLich.setText("Thêm lịch");
         btnThemLich.addActionListener(new java.awt.event.ActionListener() {
@@ -230,7 +226,7 @@ public class pnlRepairHistory extends javax.swing.JPanel {
             }
         });
 
-        btnXoaLich.setBackground(new java.awt.Color(255, 153, 0));
+        btnXoaLich.setBackground(new java.awt.Color(242, 242, 242));
         btnXoaLich.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnXoaLich.setText("Xóa lịch");
         btnXoaLich.addActionListener(new java.awt.event.ActionListener() {
@@ -239,7 +235,7 @@ public class pnlRepairHistory extends javax.swing.JPanel {
             }
         });
 
-        btnLoad.setBackground(new java.awt.Color(255, 153, 0));
+        btnLoad.setBackground(new java.awt.Color(242, 242, 242));
         btnLoad.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnLoad.setText("LOAD");
         btnLoad.addActionListener(new java.awt.event.ActionListener() {
@@ -337,13 +333,12 @@ public class pnlRepairHistory extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        jPanel5.setBackground(new java.awt.Color(255, 204, 204));
         jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel8.setText("TÌM KIẾM LỊCH");
 
-        btnTimMaPhieu.setBackground(new java.awt.Color(255, 153, 0));
+        btnTimMaPhieu.setBackground(new java.awt.Color(242, 242, 242));
         btnTimMaPhieu.setText("NHẬP MÃ PHIẾU");
         btnTimMaPhieu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -380,13 +375,12 @@ public class pnlRepairHistory extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel6.setBackground(new java.awt.Color(255, 204, 204));
         jPanel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel10.setText("Xuất Excel");
 
-        btnXuat.setBackground(new java.awt.Color(255, 153, 0));
+        btnXuat.setBackground(new java.awt.Color(242, 242, 242));
         btnXuat.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnXuat.setText("Xuất");
         btnXuat.addActionListener(new java.awt.event.ActionListener() {
@@ -419,8 +413,7 @@ public class pnlRepairHistory extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        tblSanPham.setBackground(new java.awt.Color(255, 204, 204));
-        tblSanPham.setForeground(new java.awt.Color(255, 204, 204));
+        tblSanPham.setBackground(new java.awt.Color(242, 242, 242));
         tblSanPham.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -791,13 +784,14 @@ public class pnlRepairHistory extends javax.swing.JPanel {
             DefaultTableModel model =  new DefaultTableModel();
             model.addColumn("Mã sản phẩm");
             model.addColumn("Loại sản phẩm");
-//            model.addColumn("Tên sản phẩm");
+            model.addColumn("Tên sản phẩm");
             List<Product> products = productService.getAllProducts();
             for (Product product : products){
                 model.addRow(new Object []{
                     product.getProductId(),
                     product.getProductType(),
-//                    product.getProductName()
+                    product.getSerialNumber()
+//                    product.getProductName(),
                 });
             }
             tblSanPham.setModel(model);
