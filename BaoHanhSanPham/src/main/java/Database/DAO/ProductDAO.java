@@ -64,8 +64,8 @@ public class ProductDAO {
         for (Row row : resultSet) {
             products.add(new Product(
                 row.getString("product_id"),
-                row.getString("serial_number"),
                 row.getString("product_name"),
+                row.getString("serial_number"),
                 row.getString("product_type"),
                 row.getString("manufacturer"),
                 row.getLocalDate("purchase_date"),          

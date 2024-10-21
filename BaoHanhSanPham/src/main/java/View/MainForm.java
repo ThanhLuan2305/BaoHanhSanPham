@@ -25,6 +25,7 @@ public class MainForm extends javax.swing.JFrame {
         pnlParent.repaint();
         pnlParent.revalidate();
         this.setLocationRelativeTo(null);
+        this.setResizable(false);
     }
 
     /**

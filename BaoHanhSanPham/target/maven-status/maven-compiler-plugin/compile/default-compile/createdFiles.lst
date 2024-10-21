@@ -29,6 +29,7 @@ View\pnlRepairHistory$6.class
 View\pnlWarrantyPolicy$2.class
 View\pnlCustomer.class
 View\pnlProduct.class
+View\LoginForm$5.class
 View\pnlExtendedWarranty$7.class
 Model\Product.class
 View\pnlProduct$3.class

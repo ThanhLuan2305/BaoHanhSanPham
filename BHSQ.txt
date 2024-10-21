@@ -1,6 +1,9 @@
 DROP KEYSPACE bhsp;
 CREATE KEYSPACE bhsp WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1};
 Use BHSP
+
+
+
 CREATE TABLE account (
     username TEXT PRIMARY KEY, 
     password TEXT,
